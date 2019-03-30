@@ -1,0 +1,26 @@
+{
+  "name": "smart-menu",
+  "version": "1.0.0",
+  "description": "Application for easy cooking and buying foodstuff for that",
+  "main": "index.js",
+  "scripts": {
+    "watch": "NODE_ENV=development supervisor ./index.js",
+    "start": "NODE_ENV=production node ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "eslint": "eslint"
+  },
+  "author": "Roman Avilov",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "eslint": "^5.3.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "morgan": "^1.9.1"
+  }
+}
