@@ -1,5 +1,5 @@
 {
-  "name": "smart-menu",
+  "name": "server",
   "version": "1.0.0",
   "description": "Application for easy cooking and buying foodstuff for that",
   "main": "index.js",
