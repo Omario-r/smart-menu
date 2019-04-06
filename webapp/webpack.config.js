@@ -1,10 +1,11 @@
 const path = require('path');
-const MiniCssExtractPlagin = require('mini-css-extract-plugin');
+// const MiniCssExtractPlagin = require('mini-css-extract-plugin');
+const devMode = process.env.NODE_ENV !== 'production'
 
 
 let conf = {
   entry: {
-    app: './src/index.js'
+    app: './src/index.jsx'
   },
   output: {
     path: path.resolve(__dirname, './dist'),
@@ -14,35 +15,45 @@ let conf = {
   devServer: {
     overlay: true,
   },
+  devtool: devMode ? 'eval-sourcemap' : false,
   module: {
     rules: [
       {
-        test: /\.js$/,
-        include: path.resolve(__dirname, 'src/js'),
-        loader: 'babel-loader',
+        test: /\.jsx$/,
+        include: path.resolve(__dirname, 'src'),
+        use: ['babel-loader',],
         exclude: '/node_modules'
       }, {
         test: /\.scss$/,
         use: [
-          MiniCssExtractPlagin.loader,
+          // MiniCssExtractPlagin.loader,
+          // 'style-loader',
           'css-loader',
-          'sass-loader'
+          'sass-loader',
+          // 'less-loader',
+        ]
+      }, {
+        test: /\.less$/,
+        use: [
+          // MiniCssExtractPlagin.loader,
+          // 'style-loader',
+          'css-loader',
+          // 'sass-loader',
+          { loader: 'less-loader', options: { javascriptEnabled: true, }, },
         ]
       }
     ]
   },
-  plugins: [
-    new MiniCssExtractPlagin({
-      filename: '[name].css'
-    })
-  ]
+  resolve: {
+    extensions: ['*', '.js', '.jsx']
+  },
+  // plugins: [
+  //   new MiniCssExtractPlagin({
+  //     filename: '[name].css'
+  //   })
+  // ]
 
 };
 
-module.exports = (env, options) => {
-  const prod = options.mode === 'prodaction';
+module.exports = conf;
 
-  conf.devtool = prod ? false : 'eval-sourcemap'
-
-  return conf;
-};
