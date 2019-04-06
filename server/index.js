@@ -23,6 +23,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // migrate.do();
 
 // require('./controllers/auth').connect(app);
+app.get('/', (req, res) => res.send({ status: 'Hello!!!' }));
 
 app.listen(PORT, () => {
   console.log(`Smart-menu API server start on port ${PORT}`);

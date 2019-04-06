@@ -7,7 +7,9 @@ import {
 import AppContainer from './js/app/App';
 
 const AppRoutes = () => (
-  <AppContainer></AppContainer>
+  <AppContainer>
+    
+  </AppContainer>
 );
 
 class Routes extends React.Component {

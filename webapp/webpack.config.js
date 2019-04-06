@@ -10,7 +10,7 @@ let conf = {
   output: {
     path: path.resolve(__dirname, './dist'),
     filename: './[name].js',
-    publicPath: '/dist'
+    publicPath: '/dist/'
   },
   devServer: {
     overlay: true,
@@ -19,7 +19,7 @@ let conf = {
   module: {
     rules: [
       {
-        test: /\.jsx$/,
+        test: /\.(js|jsx)$/,
         include: path.resolve(__dirname, 'src'),
         use: ['babel-loader',],
         exclude: '/node_modules'
@@ -27,7 +27,7 @@ let conf = {
         test: /\.scss$/,
         use: [
           // MiniCssExtractPlagin.loader,
-          // 'style-loader',
+          'style-loader',
           'css-loader',
           'sass-loader',
           // 'less-loader',
@@ -36,7 +36,7 @@ let conf = {
         test: /\.less$/,
         use: [
           // MiniCssExtractPlagin.loader,
-          // 'style-loader',
+          'style-loader',
           'css-loader',
           // 'sass-loader',
           { loader: 'less-loader', options: { javascriptEnabled: true, }, },

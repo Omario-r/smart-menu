@@ -1,5 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { LocaleProvider } from 'antd';
+
+import ruRU from 'antd/lib/locale-provider/ru_RU';
+
 
 
 
@@ -10,7 +14,9 @@ import './styles/index.scss';
 import Routes from './routes';
 
 ReactDOM.render(
-  <Routes/>,
-  document.getElementById('app')
+  <LocaleProvider locale={ruRU}>
+    <Routes/>
+  </LocaleProvider>,
+    document.getElementById('app')
 );
 
