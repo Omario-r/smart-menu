@@ -24,21 +24,35 @@ let conf = {
         use: ['babel-loader',],
         exclude: '/node_modules'
       }, {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader',
+        ],
+        exclude: '/node_modules'
+      }, {
         test: /\.scss$/,
         use: [
           // MiniCssExtractPlagin.loader,
           'style-loader',
           'css-loader',
           'sass-loader',
-          // 'less-loader',
-        ]
+        ],
+        exclude: '/node_modules'
       }, {
         test: /\.less$/,
         use: [
           // MiniCssExtractPlagin.loader,
-          'style-loader',
-          'css-loader',
-          // 'sass-loader',
+          { loader:'style-loader' },
+          
+          { loader:'css-loader',
+            options: {
+              modules: true,
+              localIdentName: '[path][name]__[local]--[hash:base64:5]',
+            },
+            
+          },
+          // 'less-loader',
           { loader: 'less-loader', options: { javascriptEnabled: true, }, },
         ]
       }
