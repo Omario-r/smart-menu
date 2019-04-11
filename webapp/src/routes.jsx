@@ -8,7 +8,7 @@ import AppContainer from './js/app/App';
 
 const AppRoutes = () => (
   <AppContainer>
-    
+    <div>From routes</div>
   </AppContainer>
 );
 

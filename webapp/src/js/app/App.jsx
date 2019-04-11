@@ -1,27 +1,31 @@
 import React from 'react';
-import { Layout, Icon, Button, Menu } from 'antd';
+import { Layout } from 'antd';
+import AppMenu from './Menu';
+import AppHeader from './Header';
+import styles from './styles.less'
 
-const { Content, Footer, Header, Sider } = Layout;
+const { Content, Footer, } = Layout;
 
-const { SubMenu } = Menu;
 
 class App extends React.Component {
   render() {
-    return <Layout>
-      <Header>
-        <Menu
-        theme="dark"
-        mode="horizontal"
-        defaultSelectedKeys={['2']}
-        style={{ lineHeight: '64px' }}
-      >
-        <Menu.Item key="1">nav 1</Menu.Item>
-        <Menu.Item key="2">nav 2</Menu.Item>
-        <Menu.Item key="3">nav 3</Menu.Item>
-      </Menu>
-      </Header>
+    return <Layout style={{ height: '100%' }}>
+      {/* <AppMenu />
+      <Layout style={{ marginLeft: 200, height: '100%' }}>
+        <div className={styles.container}>
+          <AppHeader />
+          <Content className={styles.content}>
+            {this.props.children}
+          </Content>
+          <Footer className={styles.footer}>
+            Smart Menu ©2019 Powered by Roman Avilov
+          </Footer>
+        </div>
+      </Layout> */}
+      <div className={styles.header}>QWERTY</div>
     </Layout>
   }
 }
+
 
 export default App;

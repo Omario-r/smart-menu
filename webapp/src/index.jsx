@@ -8,7 +8,7 @@ import ruRU from 'antd/lib/locale-provider/ru_RU';
 
 
 // Import Styles
-import './styles/index.scss';
+import './styles/index.less';
 
 // Routers
 import Routes from './routes';
