@@ -1,5 +1,37 @@
 @import "~antd/dist/antd.less";   // Import Ant Design styles by less entry
+@import "ant-vars.less";   // variables to override above
 
-div{
-  color: red;
+.appContainer {
+  height: 100%;
+}
+
+.primary-color {
+  color: @primary-color;
+}
+
+.dynamic-delete-button {
+  cursor: pointer;
+  position: relative;
+  font-size: 20px;
+  color: #777;
+  transition: all .3s;
+}
+
+.dynamic-delete-button:hover {
+  color: @primary-color;
+}
+
+.social-links__icon {
+  cursor: pointer;
+}
+
+// Styles for upload photos to gallery
+.ant-upload-select-picture-card i {
+  font-size: 32px;
+  color: #999;
+}
+
+.ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  color: #666;
 }
