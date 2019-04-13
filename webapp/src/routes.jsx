@@ -14,7 +14,9 @@ const AppRoutes = () => (
 
 class Routes extends React.Component {
   render() {
-    return <AppRoutes/>
+    return <Router>
+      <AppRoutes/>
+    </Router>
   }
 }
 
