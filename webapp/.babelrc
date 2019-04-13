@@ -8,6 +8,6 @@
   "plugins": [
     "transform-class-properties",
     "@babel/plugin-syntax-jsx",
-    ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": true }]
+    // ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": true }]
   ]
 }
