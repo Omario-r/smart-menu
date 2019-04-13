@@ -4,22 +4,23 @@ const { Sider } = Layout;
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 
-// import styles from './styles.less';
+import styles from './styles.less';
 
 
 class AppMenu extends Component {
   render() {
-    return <Sider /*className={styles.menuSider}*/>
-      <div className="logo">FREEBIE LOGO</div>
+    return <Sider className={styles.menuSider}>
+      <div className="logo">SMART MENU LOGO</div>
       <Menu theme="dark" mode="inline" >
         <Menu.Item key="dashboard">
-          <span className="nav-text">Монитор</span>
+          <Icon type="bars" />
+          <span className="nav-text">Меню</span>
         </Menu.Item>
       </Menu>
     </Sider>
   }
 }
 
-// const AppMenuWithRouter = withRouter(AppMenu)
+const AppMenuWithRouter = withRouter(AppMenu)
 
-export default AppMenu;
+export default AppMenuWithRouter;
