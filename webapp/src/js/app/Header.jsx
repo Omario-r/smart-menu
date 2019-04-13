@@ -9,11 +9,11 @@ import styles from './styles.less';
 class AppHeader extends Component {
   render() {
     return <Header className={styles.header}>
-      <h2 /*className="header__title"*/>Header</h2>
+      <h2 className="header__title">Header</h2>
     </Header>
   }
 }
 
-// const AppHeaderRouted = withRouter(AppHeader)
+const AppHeaderWithRouted = withRouter(AppHeader)
 
-export default AppHeader;
+export default AppHeaderWithRouted;
