@@ -1,11 +1,13 @@
 const path = require('path');
+// const webpack = require('webpack');
 // const MiniCssExtractPlagin = require('mini-css-extract-plugin');
 const devMode = process.env.NODE_ENV !== 'production'
 
 
 let conf = {
   entry: {
-    app: './src/index.jsx'
+    app: './src/index.jsx',
+    // vendor: ['antd']
   },
   output: {
     path: path.resolve(__dirname, './dist'),
@@ -47,13 +49,18 @@ let conf = {
           
           { loader:'css-loader',
             options: {
-              modules: true,
-              localIdentName: '[path][name]__[local]--[hash:base64:5]',
+              modules: 'global', // in this case antd styles are working
+              localIdentName: '[local]--[hash:base64:5]',
+              // exportOnlyLocals: true,
             },
             
           },
           // 'less-loader',
-          { loader: 'less-loader', options: { javascriptEnabled: true, }, },
+          { loader: 'less-loader',
+            options: {
+              javascriptEnabled: true,
+            },
+          },
         ]
       }
     ]
@@ -61,11 +68,12 @@ let conf = {
   resolve: {
     extensions: ['*', '.js', '.jsx']
   },
-  // plugins: [
-  //   new MiniCssExtractPlagin({
-  //     filename: '[name].css'
-  //   })
-  // ]
+  plugins: [
+    // new MiniCssExtractPlagin({
+    //   filename: '[name].css'
+    // }),
+    // new webpack.NamedModulesPlugin(),
+  ]
 
 };
 
