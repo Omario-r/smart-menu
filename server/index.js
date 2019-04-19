@@ -18,12 +18,12 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// const migrate = require('../core/db/migrate');
+const migrate = require('./db/migrate');
 
-// migrate.do();
+migrate.do();
 
-// require('./controllers/auth').connect(app);
-app.get('/', (req, res) => res.send({ status: 'Hello!!!' }));
+require('./controllers/auth').connect(app);
+require('./controllers/users').connect(app);
 
 app.listen(PORT, () => {
   console.log(`Smart-menu API server start on port ${PORT}`);
