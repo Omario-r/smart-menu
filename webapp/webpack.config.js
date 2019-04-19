@@ -16,6 +16,21 @@ let conf = {
   },
   devServer: {
     overlay: true,
+    historyApiFallback: true,
+    proxy: {
+      "/api": {
+        target: `http://127.0.0.1:3010/`,
+        pathRewrite: {"^/api" : ""},
+        changeOrigin: true,
+        headers: {
+          'X-Api-Role': 'admin'
+        }
+      },
+      // "/images": {
+      //   target: `http://127.0.0.1:3010/`,
+      //   changeOrigin: true,
+      // }
+    },
   },
   devtool: devMode ? 'eval-sourcemap' : false,
   module: {
