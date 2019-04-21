@@ -25,7 +25,7 @@ class VisualTrueFalse extends Component{
   render() {
 
     if (this.state.value){
-      return <Icon type="check-circle" theme="filled" style={{color:'green'}} />;
+      return <Icon type="check-circle" theme="filled" style={{color:'#333086'}} />;
     }
 
     return <Icon type="minus" />;
