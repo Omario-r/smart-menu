@@ -18,6 +18,7 @@ const sequelize = new Sequelize({
 
 const User = require('./models/user')(sequelize, Sequelize);
 const Token = require('./models/token')(sequelize, Sequelize);
+const Foodstuff = require('./models/foodstuff')(sequelize, Sequelize);
 
 // Connect relations
 
@@ -26,4 +27,5 @@ Token.belongsTo(User, { foreignKey: 'user_id', targetKey: 'id' });
 module.exports = {
   User,
   Token,
+  Foodstuff,
 };
