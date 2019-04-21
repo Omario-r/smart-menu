@@ -23,7 +23,7 @@ class Login extends Component {
   render () {
     const { getFieldDecorator } = this.props.form;
     return <div className={styles.loginContainer}>
-      <Card title={<strong>Вход Строймаркет</strong>} bordered={false} style={{ width: 300, marginBottom: '10%' }}>
+      <Card title={<strong>Вход Smart Menu</strong>} bordered={false} style={{ width: 300, marginBottom: '10%' }}>
         <Form onSubmit={this.handleSubmit} className="login-form">
           <FormItem>
              {getFieldDecorator('email', {
