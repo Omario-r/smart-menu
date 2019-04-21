@@ -15,12 +15,24 @@ import Login from './modules/auth/login';
 import AppContainer from './app/App';
 import Users from './modules/users/list';
 import UserForm from './modules/users/form';
+import Foodstuff from './modules/foodstuff/list';
+import FoodstuffForm from './modules/foodstuff/form';
+import MyFoodMenu from './modules/my-food-menu/list';
+import MyFoodMenuForm from './modules/my-food-menu/form';
+import MyRecipes from './modules/my-recipes/list';
+import MyRecipesForm from './modules/my-recipes/form';
 
 const AppRoutes = () => (
   <AppContainer>
     {/* <Route exact path="/" component={Dashboard} /> */}
     <Route path="/users" exact={true} component={Users} />
     <Route path="/users/:id" exact={true} component={UserForm} />
+    <Route path="/foodstuff" exact={true} component={Foodstuff} />
+    <Route path="/foodstuff/:id" exact={true} component={FoodstuffForm} />
+    <Route path="/my-recipes" exact={true} component={MyRecipes} />
+    <Route path="/my-recipes/:id" exact={true} component={MyRecipesForm} />
+    <Route path="/my-food-menu" exact={true} component={MyFoodMenu} />
+    <Route path="/my-food-menu/:id" exact={true} component={MyFoodMenuForm} />    
   </AppContainer>
 );
 
