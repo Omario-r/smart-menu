@@ -152,11 +152,6 @@ class UserForm extends Component {
         , 500);
   }
 
-  handlePartnerChange() {
-    this.props.form.setFieldsValue({ partner_point_id: null });
-  }
-
-
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { user, password, isEmailExist } = this.state;
