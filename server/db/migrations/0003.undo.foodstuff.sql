@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS public.foodstuff;
+DROP TABLE IF EXISTS public.foodstuffs;

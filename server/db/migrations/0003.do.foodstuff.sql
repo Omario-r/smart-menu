@@ -1,4 +1,4 @@
-CREATE TABLE public.foodstuff
+CREATE TABLE public.foodstuffs
 (
     id bigserial NOT NULL,
     name character varying(150),
