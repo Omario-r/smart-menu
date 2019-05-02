@@ -142,11 +142,31 @@ function addFoodstuff(req, res) {
     });
 }
 
+function getFoodstuffList(req, res) {
+  const category = req.params.id;
+  if (category === 'new') {
+    return res.send({
+      status: 0,
+      data: [],
+    })
+  }
+
+  DB.Foodstuff.findAll({
+    where: { category },
+  }).then(foodstuffs => 
+    res.send({
+      status: 0,
+      data: foodstuffs
+    })
+    )
+}
+
 function connect(app) {
   app.get('/foodstuff', isAdminOnlyAuthenticated, foodstuffList);
   app.post('/foodstuff', isAdminOnlyAuthenticated, addFoodstuff);
   app.put('/foodstuff/:id', isAdminOnlyAuthenticated, updateFoodstuff);
   app.get('/foodstuff/:id', isAdminOnlyAuthenticated, getFoodstuff);
+  app.get('/foodstuff/category/:id', isAdminOnlyAuthenticated, getFoodstuffList);
 }
 
 module.exports = { connect };

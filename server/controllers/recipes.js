@@ -88,7 +88,13 @@ function recipesList(req, res) {
 
 function getRecipe(req, res) {
   const recipe_id = req.params.id;
-  DB.Recipe.findByPk(recipe_id)
+  DB.Recipe.findByPk(recipe_id, {
+    include: {
+      model: DB.RecipeFoodstuff,
+      where: { recipe_id },
+      include: DB.Foodstuff,
+    }
+  })
     .then((recipe) => {
       if (!recipe) {
         return res.status(404).json({ status: 1 });
@@ -110,9 +116,21 @@ function updateRecipe(req, res) {
   DB.Recipe.findByPk(recipe_id)
     .then((recipe) => {
       if (!recipe) {
-        res.status(404).json({ status: 1 });
+        return res.status(404).json({ status: 1 });
       }
+
+      DB.RecipeFoodstuff.destroy({
+        where: { recipe_id }
+      }).then(() => r.recipe_foodstuffs.map(fs => 
+        DB.RecipeFoodstuff.create({
+          recipe_id: recipe.id,
+          foodstuff_id: fs.foodstuff_id,
+          weight_recipe: fs.weight_recipe,
+          weight_portion: fs.weight_portion,
+        })))
+
       recipe.name = r.name;
+      recipe.description = r.description;
       recipe.save();
       res.send({
         status: 0,
@@ -126,26 +144,36 @@ function updateRecipe(req, res) {
     });
 }
 
-function addRecipes(req, res) {
+function addRecipe(req, res) {
   const { user } = res.locals;
   const r = req.body;
-  const recipe = {
+  const recipeCr = {
     name: r.name,
     owner_id: user.id,
+    description: r.description,
   };
 
-  DB.Recipe.create(recipe)
-    .then((newRecipes) => {
+  DB.Recipe.create(recipeCr)
+    .then((recipe) => {
+     r.recipe_foodstuffs.map((fs) => {
+      const record = {
+        recipe_id: recipe.id,
+        foodstuff_id: fs.foodstuff_id,
+        weight_recipe: fs.weight_recipe,
+        weight_portion: fs.weight_portion,
+      }
+       DB.RecipeFoodstuff.create(record)
+     })
       res.send({
         status: 0,
-        data: newRecipes,
+        data: recipe,
       });
     });
 }
 
 function connect(app) {
   app.get('/recipes', isAdminOnlyAuthenticated, recipesList);
-  app.post('/recipes', isAdminOnlyAuthenticated, addRecipes);
+  app.post('/recipes', isAdminOnlyAuthenticated, addRecipe);
   app.put('/recipes/:id', isAdminOnlyAuthenticated, updateRecipe);
   app.get('/recipes/:id', isAdminOnlyAuthenticated, getRecipe);
 }
