@@ -49,7 +49,7 @@ class MyFoodMenu extends Component {
     this.props.setHeader({title: 'Список меню'})
   }
 
-  fetch(param = {}) {
+  fetch() {
     this.setState({ loading: true });
     const { pagination, sorter } = this.state;
     let filters = {...this.state.filters};
