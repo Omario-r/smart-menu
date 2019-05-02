@@ -16,8 +16,19 @@ const COMPANY_IMAGE_SCHEMES = {
   100: { size: 100, format: 'jpeg' },
 };
 
+const FOOD_CATEGORIES = {
+  0: 'Овощи',
+  1: 'Фрукты',
+  2: 'Зелень',
+  3: 'Мясо',
+  4: 'Птица',
+  5: 'Рыба',
+  6: 'Морепродукты',
+}
+
 module.exports = {
   ROLES,
   ROLES_TITLE,
   COMPANY_IMAGE_SCHEMES,
+  FOOD_CATEGORIES,
 };
