@@ -25,6 +25,7 @@ migrate.do();
 require('./controllers/auth').connect(app);
 require('./controllers/users').connect(app);
 require('./controllers/foodstuff').connect(app);
+require('./controllers/recipes').connect(app);
 
 app.listen(PORT, () => {
   console.log(`Smart-menu API server start on port ${PORT}`);
