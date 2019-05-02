@@ -88,7 +88,7 @@ function menusList(req, res) {
 
 function getMenu(req, res) {
   const menu_id = req.params.id;
-  DB.Recipe.findByPk(menu_id)
+  DB.Menu.findByPk(menu_id)
     .then((menu) => {
       if (!menu) {
         return res.status(404).json({ status: 1 });
@@ -145,7 +145,7 @@ function addMenu(req, res) {
 
 function connect(app) {
   app.get('/menus', isAdminOnlyAuthenticated, menusList);
-  app.post('/rmenus', isAdminOnlyAuthenticated, addMenu);
+  app.post('/menus', isAdminOnlyAuthenticated, addMenu);
   app.put('/menus/:id', isAdminOnlyAuthenticated, updateMenu);
   app.get('/menus/:id', isAdminOnlyAuthenticated, getMenu);
 }
