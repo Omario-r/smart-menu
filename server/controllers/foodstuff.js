@@ -107,13 +107,14 @@ function getFoodstuff(req, res) {
 function updateFoodstuff(req, res) {
   const r = req.body;
   const foodstuff_id = req.params.id;
-  DB.User.findByPk(foodstuff_id)
+  DB.Foodstuff.findByPk(foodstuff_id)
     .then((foodstuff) => {
       if (!foodstuff) {
         res.status(404).json({ status: 1 });
       }
-      foodstuff.name = r.name
-      foodstuff.save()
+      foodstuff.name = r.name;
+      foodstuff.category = r.category;
+      foodstuff.save();
       res.send({
         status: 0,
         data: foodstuff
@@ -129,9 +130,10 @@ function addFoodstuff(req, res) {
   const r = req.body;
   const foodstuff = {
     name: r.name,
+    category: r.category,
   };
 
-  DB.User.create(foodstuff)
+  DB.Foodstuff.create(foodstuff)
     .then((newFoodstuff) => {
       res.send({
         status: 0,
