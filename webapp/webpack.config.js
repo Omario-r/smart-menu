@@ -1,22 +1,29 @@
 const path = require('path');
 // const webpack = require('webpack');
 // const MiniCssExtractPlagin = require('mini-css-extract-plugin');
-const devMode = process.env.NODE_ENV !== 'production'
+const devMode = process.env.NODE_ENV !== 'production';
+
+const DEV_HOST = process.env.HOST || "127.0.0.1";
+const DEV_PORT = process.env.PORT || "9000";
 
 
 let conf = {
   entry: {
+    // app: path.resolve(__dirname, './src/index.jsx'),
     app: './src/index.jsx',
     // vendor: ['antd']
   },
   output: {
     path: path.resolve(__dirname, './dist'),
-    filename: './[name].js',
+    filename: './[name].js?[hash]',
     publicPath: '/dist/'
   },
   devServer: {
     overlay: true,
     historyApiFallback: true,
+    port: DEV_PORT,
+    host: DEV_HOST,
+    // disableHostCheck: true,
     proxy: {
       "/api": {
         target: `http://127.0.0.1:3010/`,
