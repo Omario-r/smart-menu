@@ -4,7 +4,7 @@ import {Table, Button, Input, Icon} from 'antd';
 import {Link} from 'react-router-dom';
 
 
-import { fetchUsers } from './dal';
+import { fetchRecipes } from './dal';
 import Dates from '../../utils/dates';
 import { setHeader } from '../../app/actions';
 import { ROLES_TITLE } from '../../../../static/constants';
@@ -21,7 +21,7 @@ const columns = [{
 }];
 
 const sortDefault = {
-  field: "created_at",
+  field: "name",
   order: "descend"
 };
 
@@ -45,7 +45,7 @@ class MyRecipes extends Component {
   };
 
   componentDidMount() {
-    // this.fetch();
+    this.fetch();
     this.props.setHeader({title: 'Рецепты'})
   }
 
@@ -54,7 +54,7 @@ class MyRecipes extends Component {
     const { pagination, sorter } = this.state;
     let filters = {...this.state.filters};
     filters.role = filters.role ? filters.role.map(r => parseInt(r, 10)) : [];
-    fetchUsers({ pagination, filters, sorter }).then(response => {
+    fetchRecipes({ pagination, filters, sorter }).then(response => {
       this.setState({
         loading: false,
         pagination: response.pagination,
