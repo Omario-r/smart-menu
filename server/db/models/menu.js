@@ -21,6 +21,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ARRAY(DataTypes.BIGINT),
       defaultValue: [],
     },
+    created_at: {
+      type: DataTypes.DATE,
+      defaultValue: new Date(),
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      defaultValue: new Date(),
+    },
   }, {
     timestamps: false,
   });

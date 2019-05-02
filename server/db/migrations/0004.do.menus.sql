@@ -7,6 +7,8 @@ CREATE TABLE public.menus
     menu_users bigint[],
     parent_id bigint,
     recipes bigint[],
+    created_at timestamp with time zone NOT NULL default CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone NOT NULL default CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
         CONSTRAINT menu_user_fk FOREIGN KEY (owner_id)
         REFERENCES public.users (id) MATCH SIMPLE

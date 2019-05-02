@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     public: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
+      defaultValue: true,
     },
     owner_id: DataTypes.BIGINT,
     recipe_users: {
@@ -22,6 +23,14 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: [],
     },
     parent_id: DataTypes.BIGINT,
+    created_at: {
+      type: DataTypes.DATE,
+      defaultValue: new Date(),
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      defaultValue: new Date(),
+    },
   }, {
       timestamps: false,
     });

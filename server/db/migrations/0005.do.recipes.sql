@@ -7,8 +7,10 @@ CREATE TABLE public.recipes
     public boolean NOT NULL DEFAULT false,
     owner_id bigint NOT NULL,
     recipe_users bigint[],
-    parant_id bigint,
+    parent_id bigint,
     PRIMARY KEY (id),
+    created_at timestamp with time zone NOT NULL default CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone NOT NULL default CURRENT_TIMESTAMP,
     CONSTRAINT recipes_users_fk FOREIGN KEY (owner_id)
         REFERENCES public.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
