@@ -112,15 +112,11 @@ function updateRecipe(req, res) {
       if (!recipe) {
         res.status(404).json({ status: 1 });
       }
-      recipe
-      .name = r.name;
-      recipe
-      .category = r.category;
-      recipe
-      .save();
+      recipe.name = r.name;
+      recipe.save();
       res.send({
         status: 0,
-        data: recipe
+        data: recipe,
 
       });
     })
@@ -131,10 +127,11 @@ function updateRecipe(req, res) {
 }
 
 function addRecipes(req, res) {
+  const { user } = res.locals;
   const r = req.body;
   const recipe = {
     name: r.name,
-    category: r.category,
+    owner_id: user.id,
   };
 
   DB.Recipe.create(recipe)
