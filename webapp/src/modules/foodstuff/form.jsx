@@ -39,12 +39,12 @@ class FoodstuffForm extends Component {
       }, () => { 
           this.props.form.setFieldsValue({
             name: foodstuff.name,
-            // category: foodstuff.category,
+            category: foodstuff.category,
           });
       });
       this.props.setHeader({ title: `Продукт: ${foodstuff.name}`, back: true, });
       return foodstuff;
-    }).then(f => this.props.form.setFieldsValue({category: f.category,}))
+    })
   }
 
 
