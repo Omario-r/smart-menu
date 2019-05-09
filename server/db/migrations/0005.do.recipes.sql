@@ -8,6 +8,7 @@ CREATE TABLE public.recipes
     owner_id bigint NOT NULL,
     recipe_users bigint[],
     parent_id bigint,
+    portions smallint,
     PRIMARY KEY (id),
     created_at timestamp with time zone NOT NULL default CURRENT_TIMESTAMP,
     updated_at timestamp with time zone NOT NULL default CURRENT_TIMESTAMP,
