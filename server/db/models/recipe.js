@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue: new Date(),
     },
+    portions: DataTypes.SMALLINT,
     updated_at: {
       type: DataTypes.DATE,
       defaultValue: new Date(),
