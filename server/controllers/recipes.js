@@ -126,10 +126,11 @@ function updateRecipe(req, res) {
           recipe_id: recipe.id,
           foodstuff_id: fs.foodstuff_id,
           weight_recipe: fs.weight_recipe,
-          weight_portion: fs.weight_portion,
+          weight_portion: Math.round(fs.weight_recipe / r.portions),
         })))
 
       recipe.name = r.name;
+      recipe.portions = r.portions;
       recipe.description = r.description;
       recipe.save();
       res.send({
@@ -149,6 +150,7 @@ function addRecipe(req, res) {
   const r = req.body;
   const recipeCr = {
     name: r.name,
+    portions: r.portions,
     owner_id: user.id,
     description: r.description,
   };
