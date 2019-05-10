@@ -1,12 +1,10 @@
 CREATE TABLE public.menus
 (
     id bigserial NOT NULL,
-    name character varying(250),
-    days jsonb[],
+    name character varying(100),
+    description character varying(500),
     owner_id bigint NOT NULL,
-    menu_users bigint[],
-    parent_id bigint,
-    recipes bigint[],
+    weeks smallint[],
     created_at timestamp with time zone NOT NULL default CURRENT_TIMESTAMP,
     updated_at timestamp with time zone NOT NULL default CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
