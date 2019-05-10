@@ -22,6 +22,7 @@ const Foodstuff = require('./models/foodstuff')(sequelize, Sequelize);
 const Menu = require('./models/menu')(sequelize, Sequelize);
 const Recipe = require('./models/recipe')(sequelize, Sequelize);
 const RecipeFoodstuff = require('./models/recipie-foodstuff')(sequelize, Sequelize);
+const MenuRecipes = require('./models/menu_recipes')(sequelize, Sequelize);
 
 // Connect relations
 
@@ -37,6 +38,12 @@ RecipeFoodstuff.belongsTo(Foodstuff, { foreignKey: 'foodstuff_id', targetKey: 'i
 Recipe.hasMany(RecipeFoodstuff, {foreignKey: 'recipe_id', targetKey: 'id'});
 Foodstuff.hasMany(RecipeFoodstuff, {foreignKey: 'foodstuff_id', targetKey: 'id'});
 
+MenuRecipes.belongsTo(Recipe, { foreignKey: 'recipe_id', targetKey: 'id' })
+MenuRecipes.belongsTo(Menu, { foreignKey: 'menu_id', targetKey: 'id' })
+
+Recipe.hasMany(MenuRecipes, {foreignKey: 'recipe_id', targetKey: 'id'});
+Menu.hasMany(MenuRecipes, {foreignKey: 'menu_id', targetKey: 'id'});
+
 module.exports = {
   User,
   Token,
@@ -44,4 +51,5 @@ module.exports = {
   Menu,
   Recipe,
   RecipeFoodstuff,
+  MenuRecipes,
 };
