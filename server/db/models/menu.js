@@ -7,18 +7,13 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
     },
     name: DataTypes.STRING,
-    days: DataTypes.JSONB,
+    description: DataTypes.STRING,
     owner_id: {
       type: DataTypes.BIGINT,
       allowNull: false
     },
-    menu_users: {
-      type: DataTypes.ARRAY(DataTypes.BIGINT),
-      defaultValue: [],
-    },
-    parent_id: DataTypes.BIGINT,
-    recipes: {
-      type: DataTypes.ARRAY(DataTypes.BIGINT),
+    weeks: {
+      type: DataTypes.ARRAY(DataTypes.SMALLINT),
       defaultValue: [],
     },
     created_at: {
