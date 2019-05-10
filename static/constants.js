@@ -26,9 +26,30 @@ const FOOD_CATEGORIES = {
   6: 'Морепродукты',
 }
 
+const WEEK_DAYS = [
+  { id: 0, name: 'monday', title: 'Понедельник' },
+  { id: 1, name: 'tuesday', title: 'Вторник' },
+  { id: 2, name: 'wednesday ', title: 'Среда' },
+  { id: 3, name: 'thursday', title: 'Четверг' },
+  { id: 4, name: 'friday', title: 'Пятница' },
+  { id: 5, name: 'saturday', title: 'Суббота' },
+  { id: 6, name: 'sunday', title: 'Воскресенье' }
+]
+
+const EAT_TIMES = [
+  { id: 0, name: 'breakfast', title: 'Завтрак', recipes: [] },
+  { id: 1, name: 'second_supper', title: 'Второй завтрак', recipes: [] },
+  { id: 2, name: 'lunch', title: 'Обед', recipes: [] },
+  { id: 3, name: 'second_lunch', title: 'Полдник', recipes: [] },
+  { id: 4, name: 'dinner', title: 'Ужин', recipes: [] },
+  { id: 5, name: 'supper', title: 'Второй ужин', recipes: [] },
+]
+
 module.exports = {
   ROLES,
   ROLES_TITLE,
   COMPANY_IMAGE_SCHEMES,
   FOOD_CATEGORIES,
+  WEEK_DAYS,
+  EAT_TIMES,
 };
