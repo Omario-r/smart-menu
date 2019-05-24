@@ -3,7 +3,7 @@ const DB = require('../db');
 
 const { Op } = Sequelize;
 const { isAdminOnlyAuthenticated } = require('../authMiddleware');
-const { ROLES } = require('../../static/constants');
+const { ROLES, WEEK_DAYS, EAT_TIMES } = require('../../static/constants');
 
 
 
@@ -88,11 +88,23 @@ function menusList(req, res) {
 
 function getMenu(req, res) {
   const menu_id = req.params.id;
-  DB.Menu.findByPk(menu_id)
+  DB.Menu.findByPk(menu_id, {
+    include: {
+      model: DB.MenuRecipes,
+      include: {
+        model: DB.Recipe,
+        include: {
+          model: DB.RecipeFoodstuff,
+          include: DB.Foodstuff,
+        }
+      },
+    }
+  })
     .then((menu) => {
       if (!menu) {
         return res.status(404).json({ status: 1 });
       }
+
       return res.json({
         status: 0,
         data: menu,
@@ -110,11 +122,13 @@ function updateMenu(req, res) {
   DB.Menu.findByPk(menu_id)
     .then((menu) => {
       if (!menu) {
-        res.status(404).json({ status: 1 });
+        return res.status(404).json({ status: 1 });
       }
       menu.name = r.name;
+      menu.weeks = r.weeks;
+      menu.description = r.description;
       menu.save();
-      res.send({
+      return res.send({
         status: 0,
         data: menu,
 
@@ -132,11 +146,22 @@ function addMenu(req, res) {
   const menu = {
     name: r.name,
     owner_id: user.id,
+    description: r.description,
+    weeks: r.weeks,
   };
 
   DB.Menu.create(menu)
     .then((newMenu) => {
-      res.send({
+      r.menu_recipes.map(recipe => DB.MenuRecipes.create({
+        menu_id: newMenu.id,
+        recipe_id: recipe.id,
+        week: recipe.week,
+        day: recipe.day,
+        eat_time: recipe.eat_time,
+        portions: recipe.portions,
+      }))
+
+      return res.send({
         status: 0,
         data: newMenu,
       });
