@@ -39,13 +39,10 @@ class MyFoodMenuForm extends Component {
         const times = EAT_TIMES.map((et, etIndex) => {
           const recipes = menu.menu_recipes.filter(recipe => {
             const isThisWeek = recipe.week === weekName;
-            // const isThisDay = recipe.day === day.id;
-            // const isThisEatTime = recipe.eat_time === et.id;
-            // return isThisWeek && isThisDay && isThisEatTime;
-            console.log('isWeek', weekName, isThisWeek)
-            return isThisWeek;
+            const isThisDay = recipe.day === day.id;
+            const isThisEatTime = recipe.eat_time === et.id;
+            return isThisWeek && isThisDay && isThisEatTime;
           })
-          console.table('et rec >>', et.recipes)
             // .map(menuRecipe => {
             //   menuRecipe.recipes.recipie_foodstuffs.map(fs => ({...fs, weight_menu: fs.weght_portion * menuRecipe.portions}));
             //   return menuRecipe;
@@ -59,7 +56,6 @@ class MyFoodMenuForm extends Component {
         weekDays: [...days],
       };
     })
-    console.table('weeks func >> ', weeks)
     this.setState({ weeks });
   }
 
@@ -134,7 +130,6 @@ class MyFoodMenuForm extends Component {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { menu, weeks } = this.state;
     // console.log('menu >>', menu)
-    console.log('weeks >>', weeks)
 
     return <Skeleton loading={this.state.loading} active>
     <Form onSubmit={this.handleSubmit}>
