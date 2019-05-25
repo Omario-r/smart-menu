@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Form, Input, Select, Row, Col, Button, Switch, message, DatePicker, Radio, Skeleton } from 'antd'
+import { Form, Input, Select, Row, Col, Button, Switch, message, DatePicker, Radio, Skeleton, Modal} from 'antd'
 import { ROLES, ROLES_TITLE, WEEK_DAYS, EAT_TIMES } from '../../../../static/constants';
 import { addMenu, updateMenu, getMenu } from './dal';
 import { DinamicSelect } from '../../components';
@@ -18,7 +18,9 @@ class MyFoodMenuForm extends Component {
     menu: { menu_recipes: [] },
     weeks: [],
     loading: true,
-    saving: false
+    saving: false,
+    showRecipeModal: false,
+    modalRecipe: { recipe: {} },
   }
 
   
@@ -149,13 +151,21 @@ class MyFoodMenuForm extends Component {
     this.saveMenu(menu);
   }
 
-  handleShowRecipeModal() {
-    
+  showRecipeModal(menuRecipe) {
+    this.setState({
+      showRecipeModal: true,
+      modalRecipe: menuRecipe,
+    })
   }
+
+  closeResipeModal() {
+    this.setState({ showRecipeModal: false })
+  }
+
 
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { menu, weeks } = this.state;
+    const { menu, weeks, modalRecipe } = this.state;
     // console.log('menu >>', menu)
 
     return <Skeleton loading={this.state.loading} active>
@@ -201,13 +211,24 @@ class MyFoodMenuForm extends Component {
             <Button onClick={this.startAddingRecipe.bind(this, week.weekName, day.id, eatTime.id)}>Добавить рецепт</Button>
             {eatTime.menuRecipes.map((menuRecipe, i) =>
               <div key={i}>
-                <a onClick={()=> console.log('reci', menuRecipe.recipe.name)}> рецепт {menuRecipe.recipe.name} {menuRecipe.portion}</a>
+                <a onClick={this.showRecipeModal.bind(this, menuRecipe)}> рецепт {menuRecipe.recipe.name} {menuRecipe.portion}</a>
               </div>)}
           </div>)}
         </div> )}
       </div>)}
       <Button onClick={this.handleWeekAdd.bind(this)}>Добавить неделю</Button>
     </div>
+    <Modal
+      title={modalRecipe.recipe.name}
+      visible={this.state.showRecipeModal}
+      // onOk={this.closeResipeModal.bind(this)}
+      onCancel={this.closeResipeModal.bind(this)}
+      footer={null}
+      closable
+      maskClosable
+    >
+      {modalRecipe.recipe.name}
+    </Modal>
   </Skeleton>
   }
 }
