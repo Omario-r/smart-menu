@@ -6,6 +6,7 @@ CREATE TABLE public.menu_recipes
     week smallint,
     day smallint,
     eat_time smallint,
+    dish smallint,
     portions smallint,
     PRIMARY KEY (id),
     CONSTRAINT menu_fk FOREIGN KEY (menu_id)

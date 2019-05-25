@@ -7,6 +7,7 @@ import { getRecipe, updateRecipe, addRecipe } from './dal';
 import { DinamicSelect } from '../../components';
 import { setHeader } from '../../app/actions';
 import { fetchFoodstuffForSelect } from '../foodstuff/dal'
+import { setRecipeForRecipeAdiing } from '../my-food-menu/action';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -25,6 +26,7 @@ class MyRecipesForm extends Component {
 
 
   componentDidMount() {
+    const { addedMenu } = this.props;
     const { id } = this.props.match.params;
     if (id === 'new') {
       this.props.setHeader({ title: 'Новый рецепт', back: true, });
@@ -103,9 +105,17 @@ class MyRecipesForm extends Component {
       )
   }
 
+  handleRecipeAddToMenu() {
+    const { recipe } = this.state;
+    const { addedMenu} = this.props;
+    this.props.setRecipeForRecipeAdiing(recipe);
+    this.props.history.push(`/my-food-menu/${addedMenu.menu_id}`)
+  }
+
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { recipe, edit } = this.state;
+    const { addedMenu } = this.props;
 
     return <Skeleton loading={this.state.loading} active>
     {edit ? <Form onSubmit={this.handleSubmit}>
@@ -223,7 +233,9 @@ class MyRecipesForm extends Component {
       <h4>Описание рецепта:</h4>
       <p>{recipe.description}</p>
       <Row>
-        <Button onClick={this.handleEditRecipe.bind(this)} >Редактировать рецепт</Button>        
+        {addedMenu
+        ? <Button onClick={this.handleRecipeAddToMenu.bind(this)} >Добавить рецепт в меню {addedMenu.menu_id}</Button>
+        : <Button onClick={this.handleEditRecipe.bind(this)} >Редактировать рецепт</Button>}     
       </Row>
     </Row>}
   </Skeleton>
@@ -233,8 +245,9 @@ class MyRecipesForm extends Component {
 const ConnectedForm = connect(
   (state) => ({
     user: state.auth.user,
+    addedMenu: state.addingRecipe.menu,
   }),
-  { setHeader }
+  { setHeader, setRecipeForRecipeAdiing }
 )(MyRecipesForm)
 
 export default Form.create()(ConnectedForm)

@@ -5,6 +5,7 @@ import { ROLES, ROLES_TITLE, WEEK_DAYS, EAT_TIMES } from '../../../../static/con
 import { addMenu, updateMenu, getMenu } from './dal';
 import { DinamicSelect } from '../../components';
 import { setHeader } from '../../app/actions';
+import { setMenuForRecipeAdding, unsetMenuForRecipeAdding } from './action';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -23,11 +24,17 @@ class MyFoodMenuForm extends Component {
   
   componentDidMount() {
     const { id } = this.props.match.params;
+    const { addedMenu, newRecipe } = this.props;
     if (id === 'new') {
       this.props.setHeader({ title: 'Новое меню', back: true, });
       this.setState({ loading: false })
     } else {
-      this.loadMenu(id);
+      this.loadMenu(id)
+        .then(() => {
+          if (newRecipe && addedMenu.menu_id == id) {
+            this.finishAddingRecipe()
+          }
+        })
     }
   }
 
@@ -36,31 +43,28 @@ class MyFoodMenuForm extends Component {
     // console.log('menu rec', menu.menu_recipes)
     const weeks = menu.weeks.map((weekName, weekIndex) => {
       const days = WEEK_DAYS.map((day, dayIndex) => {
-        const times = EAT_TIMES.map((et, etIndex) => {
-          const recipes = menu.menu_recipes.filter(recipe => {
-            const isThisWeek = recipe.week === weekName;
-            const isThisDay = recipe.day === day.id;
-            const isThisEatTime = recipe.eat_time === et.id;
+        const times = EAT_TIMES.map((eatTime, etIndex) => {
+          const menuRecipes = menu.menu_recipes.filter(menuRecipe => {
+            const isThisWeek = menuRecipe.week === weekName;
+            const isThisDay = menuRecipe.day === day.id;
+            const isThisEatTime = menuRecipe.eat_time === eatTime.id;
             return isThisWeek && isThisDay && isThisEatTime;
           })
-            // .map(menuRecipe => {
-            //   menuRecipe.recipes.recipie_foodstuffs.map(fs => ({...fs, weight_menu: fs.weght_portion * menuRecipe.portions}));
-            //   return menuRecipe;
-            // });
-          return { ...et, recipes: [...recipes] };
+            .map(menuRecipe => {
+              menuRecipe.recipe.recipe_foodstuffs.map(fs => ({...fs, weight_menu: fs.weght_portion * menuRecipe.portions}));
+              return menuRecipe;
+            });
+          return { ...eatTime, menuRecipes: [...menuRecipes] };
         })
         return { ...day, eatTimes: [...times] };
       })
-      return {
-        weekName,
-        weekDays: [...days],
-      };
+      return { weekName, weekDays: [...days] };
     })
     this.setState({ weeks });
   }
 
   loadMenu(id) {
-    getMenu(id).then(({ data: menu }) => {
+    return getMenu(id).then(({ data: menu }) => {
       this.setState({
         menu,
         loading: false
@@ -105,25 +109,48 @@ class MyFoodMenuForm extends Component {
     });
   }
 
+  saveMenu(menu) {
+    const { id } = this.props.match.params;
+    this.setState({ menu }, () => {
+      this.makeMenuTree();
+      updateMenu(id, this.state.menu)
+        .then(() => {
+          message.success('Меню сохранено');
+        })
+    })
+  }
+
   handleWeekAdd() {
     const { menu } = this.state;
     const lastWeek = menu.weeks.length ? menu.weeks[menu.weeks.length - 1] : 0;
     menu.weeks.push(lastWeek + 1);
-    this.setState({ menu },  this.makeMenuTree)
+    this.saveMenu(menu);
   }
 
   handleWeekRemove(weekName) {
     const { menu } = this.state;
     const newWeeks = menu.weeks.filter(m => m !== weekName);
     menu.weeks = newWeeks;
-    this.setState({ menu },  this.makeMenuTree)
+    this.saveMenu(menu);
   }
 
-  handleAddRecipe(weekName, day, eat_time) {
+  startAddingRecipe(week, day, eat_time) {
     const { menu } = this.state;
-    menu.menu_recipes.push({ id: 1, week: weekName, day, eat_time, portions: 5 })
+    this.props.setMenuForRecipeAdding({ menu_id: menu.id, week, day, eat_time });
+    this.props.history.push('/my-recipes')
+  }
+
+  finishAddingRecipe() {
+    const { addedMenu, newRecipe } = this.props;
+    const { menu } = this.state;
+    const menuRecipe = { ...addedMenu, recipe_id: newRecipe.id, recipe: newRecipe }
+    menu.menu_recipes.push(menuRecipe)
+    this.props.unsetMenuForRecipeAdding();
+    this.saveMenu(menu);
+  }
+
+  handleShowRecipeModal() {
     
-    this.setState({ menu }, this.makeMenuTree)
   }
 
   render() {
@@ -169,13 +196,15 @@ class MyFoodMenuForm extends Component {
 
         {week.weekDays.map(day => <div key={day.name}>
           <h3>{day.title}</h3>
-          {day.eatTimes.map(et => <div style={{ paddingLeft: 20 }} key={et.name}>
-            <h4>{et.title}</h4>
-            <Button onClick={this.handleAddRecipe.bind(this, week.weekName, day.id, et.id)}>Добавить рецепт</Button>
-            {et.recipes.map((recipe, i) => <div key={i}>рецепт {recipe.portion}</div>)}
+          {day.eatTimes.map(eatTime => <div style={{ paddingLeft: 20 }} key={eatTime.name}>
+            <h4>{eatTime.title}</h4>
+            <Button onClick={this.startAddingRecipe.bind(this, week.weekName, day.id, eatTime.id)}>Добавить рецепт</Button>
+            {eatTime.menuRecipes.map((menuRecipe, i) =>
+              <div key={i}>
+                <a onClick={()=> console.log('reci', menuRecipe.recipe.name)}> рецепт {menuRecipe.recipe.name} {menuRecipe.portion}</a>
+              </div>)}
           </div>)}
         </div> )}
-
       </div>)}
       <Button onClick={this.handleWeekAdd.bind(this)}>Добавить неделю</Button>
     </div>
@@ -184,12 +213,13 @@ class MyFoodMenuForm extends Component {
 }
 
 
-
 const ConnectedForm = connect(
   (state) => ({
     user: state.auth.user,
+    addedMenu: state.addingRecipe.menu,
+    newRecipe: state.addingRecipe.recipe,
   }),
-  { setHeader }
+  { setHeader, setMenuForRecipeAdding, unsetMenuForRecipeAdding }
 )(MyFoodMenuForm)
 
 export default Form.create()(ConnectedForm)

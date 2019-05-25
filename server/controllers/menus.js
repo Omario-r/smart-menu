@@ -128,6 +128,25 @@ function updateMenu(req, res) {
       menu.weeks = r.weeks;
       menu.description = r.description;
       menu.save();
+
+      if (r.menu_recipes.length > 0) {
+        DB.MenuRecipes.destroy({
+          where: { menu_id }
+        }).then(() => r.menu_recipes.map(menuRecipe => {
+          // if week was deleted we don't need its recipes
+          if (r.weeks.includes(menuRecipe.week)) {
+            return DB.MenuRecipes.create({
+              menu_id,
+              recipe_id: menuRecipe.recipe_id,
+              week: menuRecipe.week,
+              day: menuRecipe.day,
+              eat_time: menuRecipe.eat_time,
+              portions: menuRecipe.portions,
+            })
+          }
+          return;
+        }))
+      }
       return res.send({
         status: 0,
         data: menu,
@@ -152,15 +171,6 @@ function addMenu(req, res) {
 
   DB.Menu.create(menu)
     .then((newMenu) => {
-      r.menu_recipes.map(recipe => DB.MenuRecipes.create({
-        menu_id: newMenu.id,
-        recipe_id: recipe.id,
-        week: recipe.week,
-        day: recipe.day,
-        eat_time: recipe.eat_time,
-        portions: recipe.portions,
-      }))
-
       return res.send({
         status: 0,
         data: newMenu,
