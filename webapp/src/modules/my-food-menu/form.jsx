@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Form, Input, Select, Row, Col, Button, Switch, message, DatePicker, Radio, Skeleton, Modal, Tabs} from 'antd'
+import { Form, Input, Select, Row, Col, Button, Switch, message, DatePicker, Radio, Skeleton, Modal, Tabs, Card, Icon } from 'antd'
 import { ROLES, ROLES_TITLE, WEEK_DAYS, EAT_TIMES } from '../../../../static/constants';
 import { addMenu, updateMenu, getMenu } from './dal';
 import { DinamicSelect } from '../../components';
@@ -15,7 +15,7 @@ const RadioGroup = Radio.Group;
 
 class MyFoodMenuForm extends Component {
 
-  state ={
+  state = {
     menu: { menu_recipes: [] },
     weeks: [],
     loading: true,
@@ -152,20 +152,16 @@ class MyFoodMenuForm extends Component {
     this.saveMenu(menu);
   }
 
-  showRecipeModal(menuRecipe) {
-    this.setState({
-      showRecipeModal: true,
-      modalRecipe: menuRecipe,
-    })
-  }
+  removeRecipe(id) {
+    const { menu } = this.state;
+    const menu_recipes = menu.menu_recipes.filter(mr => mr.id !== id)
+    this.saveMenu( { ...menu, menu_recipes })
 
-  closeResipeModal() {
-    this.setState({ showRecipeModal: false })
   }
 
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { menu, weeks, modalRecipe } = this.state;
+    const { menu, weeks } = this.state;
     // console.log('menu >>', menu)
 
     return <Skeleton loading={this.state.loading} active>
@@ -199,6 +195,7 @@ class MyFoodMenuForm extends Component {
       </Row>
     </Form>
     <div>
+      <Button size='small' style={{ marginBottom: 10 }} onClick={this.handleWeekAdd.bind(this)}>Добавить неделю</Button>
       <Tabs
         hideAdd
         type="editable-card"
@@ -206,37 +203,26 @@ class MyFoodMenuForm extends Component {
       >
       {weeks.map((week, weekIndex) => (
         <TabPane tab={`Неделя ${weekIndex + 1}`} key={week.weekName}>
-          <Week week={week}/>
+          <Week week={week} addRecipe={this.startAddingRecipe.bind(this)} removeRecipe={this.removeRecipe.bind(this)}/>
         </TabPane>
       ))}
       </Tabs>
-      <Button onClick={this.handleWeekAdd.bind(this)}>Добавить неделю</Button>
     </div>
-    <Modal
-      title={modalRecipe.recipe.name}
-      visible={this.state.showRecipeModal}
-      // onOk={this.closeResipeModal.bind(this)}
-      onCancel={this.closeResipeModal.bind(this)}
-      footer={null}
-      closable
-      maskClosable
-    >
-      {modalRecipe.recipe.name}
-    </Modal>
+
   </Skeleton>
   }
 }
 
 class Week extends Component {
   render() {
-    const { week } = this.props; 
+    const { week, addRecipe, removeRecipe } = this.props; 
     return <div>
       <Tabs
         tabPosition='left'
       >
         {week.weekDays.map(day => (
-          <TabPane tab={`${day.name}`} key={day.name}>
-            <Day day={day}/>
+          <TabPane tab={`${day.title}`} key={day.name}>
+            <Day day={day} week={week} addRecipe={addRecipe} removeRecipe={removeRecipe}/>
           </TabPane>
         ))}
       </Tabs>
@@ -246,31 +232,65 @@ class Week extends Component {
 }
 
 class Day extends Component {
+  state = {
+    modalRecipe: { recipe: {} },
+  }
+
+  showRecipeModal(menuRecipe) {
+    this.setState({
+      showRecipeModal: true,
+      modalRecipe: menuRecipe,
+    })
+  }
+
+  closeResipeModal() {
+    this.setState({ showRecipeModal: false })
+  }
+
   render() {
-    return <div>{this.props.day.name}</div>
+    const { day, week, addRecipe, removeRecipe } = this.props;
+    const { modalRecipe } = this.state;
+
+    const eatTimeCard = (eatTimes) => eatTimes.map(eatTime => 
+      <Card
+        key={eatTime.name}
+        title={eatTime.title}
+        style={{ width: 300, marginBottom: 20 }}
+        extra={<Button style={{ marginTop: 5 }} size='small' onClick={addRecipe.bind(null, week.weekName, day.id, eatTime.id)}>Добавить блюдо</Button>}
+      >
+        {eatTime.menuRecipes.map((menuRecipe, i) =>
+          <div key={i}>
+            <span>{menuRecipe.recipe.name}</span>
+            <a onClick={this.showRecipeModal.bind(this, menuRecipe)}> рецепт {menuRecipe.portion}</a>
+            <Icon style={{ marginLeft: 3 }} type="close-circle"  onClick={removeRecipe.bind(null, menuRecipe.id)} />
+          </div>)}
+      </Card>)
+
+    return <div>    
+      <Row><h2>{day.title}</h2></Row>
+      <Row gutter={24}>
+        <Col span={6} >
+          {eatTimeCard(day.eatTimes.filter((d, i) => (i + 2) % 2 === 0))}
+        </Col >
+        <Col style={{ paddingLeft: 50 }} span={6} >
+          {eatTimeCard(day.eatTimes.filter((d, i) => (i + 2) % 2 !== 0))}
+        </Col>
+      </Row>
+      <Modal
+        title={modalRecipe.recipe.name}
+        visible={this.state.showRecipeModal}
+        // onOk={this.closeResipeModal.bind(this)}
+        onCancel={this.closeResipeModal.bind(this)}
+        footer={null}
+        closable
+        maskClosable
+      >
+        {modalRecipe.recipe.name}
+      </Modal>
+    </div>
+    
   }
 }
-
-/*
-<div key={week.weekName}>
-<div key={day.name}></div>
-
-        <h2>Неделя {week.weekName}</h2>
-        <Button onClick={this.handleWeekRemove.bind(this, week.weekName)}>Удалить неделю</Button>
-
-
-{week.weekDays.map(day => <div key={day.name}>
-  <h3>{day.title}</h3>
-  {day.eatTimes.map(eatTime => <div style={{ paddingLeft: 20 }} key={eatTime.name}>
-    <h4>{eatTime.title}</h4>
-    <Button onClick={this.startAddingRecipe.bind(this, week.weekName, day.id, eatTime.id)}>Добавить рецепт</Button>
-    {eatTime.menuRecipes.map((menuRecipe, i) =>
-      <div key={i}>
-        <a onClick={this.showRecipeModal.bind(this, menuRecipe)}> рецепт {menuRecipe.recipe.name} {menuRecipe.portion}</a>
-      </div>)}
-  </div>)}
-</div> )}
-*/
 
 const ConnectedForm = connect(
   (state) => ({
