@@ -129,7 +129,7 @@ function updateMenu(req, res) {
       menu.description = r.description;
       menu.save();
 
-      if (r.menu_recipes.length > 0) {
+      // if (r.menu_recipes.length > 0) {
         DB.MenuRecipes.destroy({
           where: { menu_id }
         }).then(() => r.menu_recipes.map(menuRecipe => {
@@ -146,7 +146,7 @@ function updateMenu(req, res) {
           }
           return;
         }))
-      }
+      // }
       return res.send({
         status: 0,
         data: menu,
