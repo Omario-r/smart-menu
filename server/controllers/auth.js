@@ -14,7 +14,7 @@ function adminLogin(req, res) {
   DB.User.findOne({
     where: {
       email: r.email.toLowerCase(),
-      role: { [Op.eq]: ROLES.admin },
+      // role: { [Op.eq]: ROLES.admin },
       active: true,
       removed: false,
     },
