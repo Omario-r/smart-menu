@@ -17,7 +17,7 @@ const VENDOR_LIBS = ['react', 'react-dom',
 module.exports = (env, argv) => {
 
   const prodConfig = {
-    optimization: { minimize: false },
+    // optimization: { minimize: false },
     devtool: false,
     plugins: [
       // new webpack.NamedModulesPlugin(),
