@@ -1,13 +1,13 @@
 const ROLES = {
   user: 1,
   editor: 2,
-  admin: 4,
+  admin: 3,
 };
 
 const ROLES_TITLE = {
-  0: 'Клиент',
-  1: 'Компания',
-  3: 'Администратор',
+  [ROLES['user']]: 'Пользователь',
+  [ROLES['editor']]: 'Редактор',
+  [ROLES['admin']]: 'Администратор',
 }
 
 const COMPANY_IMAGE_SCHEMES = {

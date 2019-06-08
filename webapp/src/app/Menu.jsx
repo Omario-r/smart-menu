@@ -3,6 +3,7 @@ import { Menu, Layout, Icon, Badge, Button } from 'antd';
 const { Sider } = Layout;
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
+import { ROLES } from '../../../static/constants'
 
 import styles from './styles.less';
 
@@ -22,6 +23,10 @@ class AppMenu extends Component {
 
   render() {
     const path = this.props.location.pathname.slice(1);
+    const { user } = this.props;
+
+    const isAdmin = user.role === ROLES.admin;
+    const isAdminOrEditor = [ROLES.admin, ROLES.editor].includes(user.role);
 
     let defaultKey = path || 'dashboard';
 
@@ -36,14 +41,14 @@ class AppMenu extends Component {
           <Icon type="profile" />
           <span className="nav-text">Мои рецепты</span>
         </Menu.Item>
-        <Menu.Item key="foodstuff">
+        {isAdminOrEditor && <Menu.Item key="foodstuff">
           <Icon type="gold" />
           <span className="nav-text">Продукты</span>
-        </Menu.Item>
-        <Menu.Item key="users">
+        </Menu.Item>}
+        {isAdmin && <Menu.Item key="users">
           <Icon type="user" />
           <span className="nav-text">Пользователи</span>
-        </Menu.Item>
+        </Menu.Item>}
 
       </Menu>
     </Sider>
@@ -52,4 +57,7 @@ class AppMenu extends Component {
 
 const AppMenuWithRouter = withRouter(AppMenu)
 
-export default AppMenuWithRouter;
+export default connect((state) => ({
+  user: state.auth.user,
+}), {}
+)(AppMenuWithRouter);

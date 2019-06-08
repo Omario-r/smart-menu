@@ -24,7 +24,7 @@ import MyRecipesForm from './modules/my-recipes/form';
 
 const AppRoutes = () => (
   <AppContainer>
-    <Route exact path="/" component={Users} />
+    <Route exact path="/" component={MyFoodMenu} />
     <Route path="/users" exact={true} component={Users} />
     <Route path="/users/:id" exact={true} component={UserForm} />
     <Route path="/foodstuff" exact={true} component={Foodstuff} />
