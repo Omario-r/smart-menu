@@ -68,9 +68,24 @@ function isAdminOnlyAuthenticated(req, res, next) {
       }));
 }
 
-function isAdminOrClientAuthenticated(req, res, next) {
+function isAdminOrEditorAuthenticated(req, res, next) {
   isAuthenticated(req).then((user) => {
-    if (user.role === ROLES.admin || user.role === ROLES.client) {
+    if (user.role === ROLES.admin || user.role === ROLES.editor) {
+      res.locals.user = user;
+      return next();
+    }
+    return res.status(403).json({ status: 403, message: 'Forbidden' });
+  })
+    .catch(err => res.status(err.status || 403)
+      .json({
+        status: err.status || 403,
+        message: err.message || 'Forbidden',
+      }));
+}
+
+function isUserAuthenticated(req, res, next) {
+  isAuthenticated(req).then((user) => {
+    if (user.role === ROLES.admin || user.role === ROLES.editor || user.role === ROLES.user) {
       res.locals.user = user;
       return next();
     }
@@ -85,5 +100,6 @@ function isAdminOrClientAuthenticated(req, res, next) {
 
 module.exports = {
   isAdminOnlyAuthenticated,
-  isAdminOrClientAuthenticated,
+  isUserAuthenticated,
+  isAdminOrEditorAuthenticated,
 };

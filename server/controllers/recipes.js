@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const DB = require('../db');
 
 const { Op } = Sequelize;
-const { isAdminOnlyAuthenticated } = require('../authMiddleware');
+const { isUserAuthenticated } = require('../authMiddleware');
 const { ROLES } = require('../../static/constants');
 
 
@@ -174,10 +174,10 @@ function addRecipe(req, res) {
 }
 
 function connect(app) {
-  app.get('/recipes', isAdminOnlyAuthenticated, recipesList);
-  app.post('/recipes', isAdminOnlyAuthenticated, addRecipe);
-  app.put('/recipes/:id', isAdminOnlyAuthenticated, updateRecipe);
-  app.get('/recipes/:id', isAdminOnlyAuthenticated, getRecipe);
+  app.get('/recipes', isUserAuthenticated, recipesList);
+  app.post('/recipes', isUserAuthenticated, addRecipe);
+  app.put('/recipes/:id', isUserAuthenticated, updateRecipe);
+  app.get('/recipes/:id', isUserAuthenticated, getRecipe);
 }
 
 module.exports = { connect };

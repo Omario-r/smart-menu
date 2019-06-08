@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const DB = require('../db');
 
 const { Op } = Sequelize;
-const { isAdminOnlyAuthenticated } = require('../authMiddleware');
+const { isAdminOrEditorAuthenticated } = require('../authMiddleware');
 const { ROLES } = require('../../static/constants');
 
 
@@ -162,11 +162,11 @@ function getFoodstuffList(req, res) {
 }
 
 function connect(app) {
-  app.get('/foodstuff', isAdminOnlyAuthenticated, foodstuffList);
-  app.post('/foodstuff', isAdminOnlyAuthenticated, addFoodstuff);
-  app.put('/foodstuff/:id', isAdminOnlyAuthenticated, updateFoodstuff);
-  app.get('/foodstuff/:id', isAdminOnlyAuthenticated, getFoodstuff);
-  app.get('/foodstuff/category/:id', isAdminOnlyAuthenticated, getFoodstuffList);
+  app.get('/foodstuff', isAdminOrEditorAuthenticated, foodstuffList);
+  app.post('/foodstuff', isAdminOrEditorAuthenticated, addFoodstuff);
+  app.put('/foodstuff/:id', isAdminOrEditorAuthenticated, updateFoodstuff);
+  app.get('/foodstuff/:id', isAdminOrEditorAuthenticated, getFoodstuff);
+  app.get('/foodstuff/category/:id', isAdminOrEditorAuthenticated, getFoodstuffList);
 }
 
 module.exports = { connect };

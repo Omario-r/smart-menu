@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     fathers_name: DataTypes.STRING,
     password: DataTypes.STRING,
     role: DataTypes.INTEGER,
-    // roles: 0 - user, 3 - admin
+    // roles: 0 - user, 1 - editor,3 - admin
     active: DataTypes.BOOLEAN,
     removed: DataTypes.BOOLEAN,
     created_at: {

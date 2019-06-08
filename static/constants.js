@@ -1,7 +1,7 @@
 const ROLES = {
-  client: 0,
-  company: 1,
-  admin: 3,
+  user: 1,
+  editor: 2,
+  admin: 4,
 };
 
 const ROLES_TITLE = {

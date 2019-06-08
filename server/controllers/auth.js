@@ -7,7 +7,7 @@ const { ROLES } = require('../../static/constants');
 const { Op } = Sequelize;
 
 
-const { isAdminOrClientAuthenticated } = require('../authMiddleware');
+const { isUserAuthenticated } = require('../authMiddleware');
 
 function adminLogin(req, res) {
   const r = req.body;
@@ -74,7 +74,7 @@ function getSelfUser(req, res) {
 
 function connect(app) {
   app.post('/auth/login', login);
-  app.get('/auth/getself', isAdminOrClientAuthenticated, getSelfUser);
+  app.get('/auth/getself', isUserAuthenticated, getSelfUser);
 }
 
 module.exports = { connect };
