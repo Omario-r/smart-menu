@@ -223,7 +223,7 @@ class UserForm extends Component {
               >
                 {getFieldDecorator('phone', {
                   rules: [
-                    { type: 'string', pattern: /^79[\d]{9}$/, message: 'Номер должен быть в формате \'79\' и ещё 9 цифр' },
+                    // { type: 'string', pattern: /^79[\d]{9}$/, message: 'Номер должен быть в формате \'79\' и ещё 9 цифр' },
                     { validator: this.validatePhone },
                     // { required: true, message: 'Введите телефон' },
                   ],
