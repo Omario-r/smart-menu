@@ -1,11 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Form, Input, Select, Row, Col, Button, Switch, message, DatePicker, Radio, Skeleton, Modal, Tabs, Card, Icon } from 'antd'
+import { PDFViewer } from '@react-pdf/renderer';
+
+
 import { ROLES, ROLES_TITLE, WEEK_DAYS, EAT_TIMES } from '../../../../static/constants';
 import { addMenu, updateMenu, getMenu } from './dal';
 import { DinamicSelect } from '../../components';
 import { setHeader } from '../../app/actions';
 import { setMenuForRecipeAdding, unsetMenuForRecipeAdding } from './action';
+import PdfMenu from './pdf'
 
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
@@ -208,7 +212,7 @@ class MyFoodMenuForm extends Component {
       ))}
       </Tabs>
     </div>
-
+      <Button onClick={() => this.props.history.push('/pdf-menu')}>PDF</Button>
   </Skeleton>
   }
 }
