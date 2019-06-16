@@ -155,7 +155,15 @@ module.exports = (env, argv) => {
           use: [
            'file-loader'
           ]
-        }
+        },
+        {
+          test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+          exclude: path.resolve(__dirname, "node_modules"),
+          use: [
+            { loader: "url-loader",
+              options: { prefix: "font", limit: 10000, mimetype: "application/octet-stream" }
+            } ]
+        },
       ]
     },
   };

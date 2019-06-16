@@ -61,6 +61,9 @@ class MyFoodMenuForm extends Component {
               menuRecipe.recipe.recipe_foodstuffs.map(fs => ({...fs, weight_menu: fs.weght_portion * menuRecipe.portions}));
               return menuRecipe;
             });
+            if (!day.notEmpty) {
+              day.notEmpty = menuRecipes.length > 0 ? true : false;              
+            }
           return { ...eatTime, menuRecipes: [...menuRecipes] };
         })
         return { ...day, eatTimes: [...times] };
@@ -212,7 +215,7 @@ class MyFoodMenuForm extends Component {
       ))}
       </Tabs>
     </div>
-      <Button onClick={() => this.props.history.push('/pdf-menu')}>PDF</Button>
+      <Button onClick={() => this.props.history.push({ pathname:'/pdf-menu', weeks })}>PDF</Button>
   </Skeleton>
   }
 }
