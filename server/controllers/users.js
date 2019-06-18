@@ -222,6 +222,31 @@ function getPhonesForValidation(req, res) {
     }));
 }
 
+function userRegistration(req, res) {
+  const { email, password } = req.body;
+  const lowEmail = email.toLowerCase();
+
+  DB.User.findAll({
+    where: {
+      email: lowEmail,
+    }
+  }).then(emails => {
+    console.log('emails>>>>>', emails)
+    if (emails.length) {
+      return res.status(404).json({ status: 1 });
+    }
+    DB.User.create({
+      email: lowEmail,
+      password: makePassword.hash(password),
+      role: ROLES.user,
+      active: true,
+    }).then(user => res.send({
+      status: 0,
+      data: user,
+    }))
+  })
+}
+
 function connect(app) {
   app.get('/users/', isAdminOnlyAuthenticated, usersList);
   app.post('/users', isAdminOnlyAuthenticated, addUser);
@@ -229,6 +254,7 @@ function connect(app) {
   app.get('/users/:id', isAdminOnlyAuthenticated, getUser);
   app.post('/users/checkemail', getEmailsForValidation);
   app.post('/users/checkphone', getPhonesForValidation);
+  app.post('/users/register', userRegistration)
 }
 
 module.exports = { connect };

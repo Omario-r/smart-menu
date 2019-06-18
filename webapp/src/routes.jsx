@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   BrowserRouter as Router,
-  Route
+  Route, Switch
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -11,6 +11,7 @@ import { setUser, fetchSelfUser } from './modules/auth/actions';
 
 // Public components
 import Login from './modules/auth/login';
+import Registration from './modules/auth/regisration';
 // App components
 import AppContainer from './app/App';
 import Users from './modules/users/list';
@@ -41,7 +42,10 @@ const AppRoutes = () => (
 class AuthRoutes extends React.Component {
   render() {
     return <div className="appContainer">
-      <Route path="/" component={Login} />
+      <Switch>
+        <Route exact path="/" component={Login} />
+        <Route exact path="/registration" component={Registration} />      
+      </Switch>
     </div>
   }
 }

@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { loginRequest } from './actions'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { loginRequest } from './actions';
+import { Link } from 'react-router-dom';
 
 import { Card, Button, Form, Icon, Input } from 'antd';
 
@@ -39,7 +40,8 @@ class Login extends Component {
                <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Пароль" />
              )}
           </FormItem>
-          <div style={{ textAlign: 'right' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Link to='/registration'>Регистрация</Link>
             <Button type="primary" htmlType="submit" className="login-form-button" loading={this.props.auth.loginRequesting}>
               Вход
             </Button>
