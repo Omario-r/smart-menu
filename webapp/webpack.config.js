@@ -92,7 +92,7 @@ module.exports = (env, argv) => {
     entry: {
       app: path.resolve(__dirname, './src/index.jsx'),
       // app: './src/index.jsx',
-      vendor: VENDOR_LIBS,
+      // vendor: VENDOR_LIBS,
     },
     output: {
       path: path.join(__dirname, 'dist'),
