@@ -10,7 +10,7 @@ const DEV_PORT = process.env.PORT || "9000";
 const VENDOR_LIBS = ['react', 'react-dom',
   'redux', 'react-redux', 'redux-thunk',
   'react-router', 'react-router-dom', 'antd',
-  'moment',
+  '@react-pdf/renderer'
 ];
 
 
