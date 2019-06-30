@@ -18,7 +18,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-const migrate = require('./db/migrate');
+const migrate = require('../core/db/migrate');
 
 migrate.do();
 
