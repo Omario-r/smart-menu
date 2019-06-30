@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const DB = require('../db');
+const DB = require('../../core/db');
 const Password = require('../utils/password');
 const Dates = require('../utils/dates');
 const { ROLES } = require('../../static/constants');

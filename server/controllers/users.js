@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const DB = require('../db');
+const DB = require('../../core/db');
 
 const { Op } = Sequelize;
 const { isAdminOnlyAuthenticated } = require('../authMiddleware');
