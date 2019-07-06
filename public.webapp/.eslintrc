@@ -1,0 +1,17 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "rules": {
+    "no-console": 2,
+    "react/prop-types": [0, { "ignore": ["children", "form"], "customValidators": "" }],
+    "import/no-extraneous-dependencies": 0
+  }
+}
