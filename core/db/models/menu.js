@@ -16,6 +16,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ARRAY(DataTypes.SMALLINT),
       defaultValue: [],
     },
+    public: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+      allowNull: false,
+    },
     created_at: {
       type: DataTypes.DATE,
       defaultValue: new Date(),
