@@ -53,12 +53,12 @@ class MyFoodMenu extends Component {
     this.setState({ loading: true });
     const { pagination, sorter } = this.state;
     let filters = {...this.state.filters};
-    filters.role = filters.role ? filters.role.map(r => parseInt(r, 10)) : [];
-    fetchMenus({ pagination, filters, sorter }).then(response => {
+    // filters.role = filters.role ? filters.role.map(r => parseInt(r, 10)) : [];
+    fetchMenus({ pagination, filters, sorter }).then(({ data, pagination }) => {
       this.setState({
         loading: false,
-        pagination: response.pagination,
-        data: response.data
+        pagination,
+        data,
       });
     });
   }
