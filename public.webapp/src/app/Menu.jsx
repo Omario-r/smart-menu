@@ -33,6 +33,10 @@ class AppMenu extends Component {
     return <Sider className={styles.menuSider}>
       <div className="logo"><img src={require('../images/SM_logo_gray1.jpg')} style={{ height: 70, width: '100%' }} /></div>
       <Menu theme="dark" mode="inline" defaultSelectedKeys={[defaultKey]} onClick={this.onMenuClick.bind(this)}>
+        <Menu.Item key="all-food-menu">
+          <Icon type="bars" />
+          <span className="nav-text">Все Меню</span>
+        </Menu.Item>
         <Menu.Item key="my-food-menu">
           <Icon type="bars" />
           <span className="nav-text">Мои Меню</span>
