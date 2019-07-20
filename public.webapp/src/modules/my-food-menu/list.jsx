@@ -1,16 +1,19 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {Table, Button, Input, Icon} from 'antd';
-import {Link} from 'react-router-dom';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Table, Button, Input, Icon, Radio } from 'antd';
+import { Link } from 'react-router-dom';
 
 
-import { fetchMenus } from './dal';
+import { fetchAllMenus, fetchUserMenus } from './dal';
 import Dates from '../../utils/dates';
 import { setHeader } from '../../app/actions';
 import { ROLES_TITLE } from '../../../../static/constants';
 import  { VisualTrueFalse } from '../../components';
 
 const Search = Input.Search;
+
+
+const menuMode = { my: 'my', all: 'all' };
 
 const columns = [{
   title: 'Имя',
@@ -42,6 +45,8 @@ class MyFoodMenu extends Component {
     },
     sorter: sortDefault,
     loading: false,
+    status: menuMode.my,
+    
   };
 
   componentDidMount() {
@@ -51,8 +56,11 @@ class MyFoodMenu extends Component {
 
   fetch() {
     this.setState({ loading: true });
-    const { pagination, sorter } = this.state;
+    const { pagination, sorter, status } = this.state;
     let filters = {...this.state.filters};
+
+    const fetchMenus = status === menuMode.my ? fetchUserMenus : fetchAllMenus;
+
     // filters.role = filters.role ? filters.role.map(r => parseInt(r, 10)) : [];
     fetchMenus({ pagination, filters, sorter }).then(({ data, pagination }) => {
       this.setState({
@@ -99,14 +107,27 @@ class MyFoodMenu extends Component {
     this.props.history.push(`/my-food-menu/new`);
   }
 
+  handleMenuTypeChange = (e) => {
+    this.setState({
+      status: e.target.value
+    }, this.fetch)
+  }
+
   render() {
     return <div>
-    <div style={{width: 300, float: "left", paddingRight: 20}}>
-      <Search placeholder="Поиск" onSearch={this.searchChange} enterButton/>
+    <div style={{ flexDirection: 'row' }}>
+      <div style={{width: 300, float: "left", paddingRight: 20}}>
+        <Search placeholder="Поиск" onSearch={this.searchChange} enterButton/>
+      </div>
+      <Radio.Group defaultValue={menuMode.my} onChange={this.handleMenuTypeChange}>
+        <Radio.Button value={menuMode.my} >Мои меню</Radio.Button>
+        <Radio.Button value={menuMode.all} >Все меню</Radio.Button>
+      </Radio.Group>
+      <div style={{float: 'right', marginBottom: 15}}>
+        <Button onClick={this.createNew.bind(this)} primary={"true"}>Создать<Icon type="plus"/></Button>
+      </div>      
     </div>
-    <div style={{textAlign: 'right', marginBottom: 10,}}>
-      <Button onClick={this.createNew.bind(this)} primary={"true"}>Создать<Icon type="plus"/></Button>
-    </div>
+
     <Table
       columns={columns}
       rowKey={record => record.id}
