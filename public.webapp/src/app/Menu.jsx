@@ -41,6 +41,10 @@ class AppMenu extends Component {
           <Icon type="bars" />
           <span className="nav-text">Мои Меню</span>
         </Menu.Item>
+        <Menu.Item key="all-recipes">
+          <Icon type="profile" />
+          <span className="nav-text">Все рецепты</span>
+        </Menu.Item>
         <Menu.Item key="my-recipes">
           <Icon type="profile" />
           <span className="nav-text">Мои рецепты</span>

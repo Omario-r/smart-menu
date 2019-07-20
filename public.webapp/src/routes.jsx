@@ -24,6 +24,7 @@ import MyRecipes from './modules/my-recipes/list';
 import MyRecipesForm from './modules/my-recipes/form';
 import MyPDFMenu from './modules/my-food-menu/pdf';
 import AllFoodMenu from './modules/all-food-menu/list';
+import AllRecipes from './modules/all-recipes/list';
 
 const AppRoutes = () => (
   <AppContainer>
@@ -38,6 +39,7 @@ const AppRoutes = () => (
     <Route path="/my-food-menu/:id" exact={true} component={MyFoodMenuForm} />
     <Route path="/pdf-menu" exact={true} component={MyPDFMenu} />
     <Route path="/all-food-menu" exact={true} component={AllFoodMenu} />
+    <Route path="/all-recipes" exact={true} component={AllRecipes} />
   </AppContainer>
 );
 

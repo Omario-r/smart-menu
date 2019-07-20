@@ -1,6 +1,6 @@
 import XHR from '../../utils/fetch';
 
-export const fetchRecipes = (params) => XHR.getList('/user-recipes', params);
+export const fetchRecipes = (params) => XHR.getList('/recipes', params);
 
 export const addRecipe = (params) => XHR.post('/recipes', params);
 
