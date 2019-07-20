@@ -29,11 +29,11 @@ function recipesList(req, res, user_id) {
       });
     }
 
-    // if (user_id) {
-    //     where.push({
-    //         id: user_id,
-    //     })
-    // }
+    if (user_id) {
+        where.push({
+            id: user_id,
+        })
+    }
   
     // final where
     where = where.length > 1 ? {
