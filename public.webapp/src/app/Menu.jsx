@@ -37,13 +37,9 @@ class AppMenu extends Component {
           <Icon type="bars" />
           <span className="nav-text">Меню</span>
         </Menu.Item>
-        <Menu.Item key="all-recipes">
+        <Menu.Item key="recipes">
           <Icon type="profile" />
-          <span className="nav-text">Все рецепты</span>
-        </Menu.Item>
-        <Menu.Item key="my-recipes">
-          <Icon type="profile" />
-          <span className="nav-text">Мои рецепты</span>
+          <span className="nav-text">Рецепты</span>
         </Menu.Item>
         {isAdminOrEditor && <Menu.Item key="foodstuff">
           <Icon type="gold" />

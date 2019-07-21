@@ -1,16 +1,18 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {Table, Button, Input, Icon} from 'antd';
-import {Link} from 'react-router-dom';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Table, Button, Input, Icon, Radio } from 'antd';
+import { Link } from 'react-router-dom';
 
 
-import { fetchRecipes } from './dal';
+import { fetchAllRecipes, fetchUserRecipes } from './dal';
 import Dates from '../../utils/dates';
 import { setHeader } from '../../app/actions';
 import { ROLES_TITLE } from '../../../../static/constants';
 import  { VisualTrueFalse } from '../../components';
 
 const Search = Input.Search;
+
+const recipeMode = { my: 'my', all: 'all' };
 
 const columns = [{
   title: 'Имя',
@@ -42,6 +44,7 @@ class MyRecipes extends Component {
     },
     sorter: sortDefault,
     loading: false,
+    mode: recipeMode.my,
   };
 
   componentDidMount() {
@@ -51,9 +54,11 @@ class MyRecipes extends Component {
 
   fetch(param = {}) {
     this.setState({ loading: true });
-    const { pagination, sorter } = this.state;
+    const { pagination, sorter, mode } = this.state;
     let filters = {...this.state.filters};
-    filters.role = filters.role ? filters.role.map(r => parseInt(r, 10)) : [];
+    // filters.role = filters.role ? filters.role.map(r => parseInt(r, 10)) : [];
+    const fetchRecipes = mode === recipeMode.my ? fetchUserRecipes: fetchAllRecipes;
+
     fetchRecipes({ pagination, filters, sorter }).then(response => {
       this.setState({
         loading: false,
@@ -99,14 +104,28 @@ class MyRecipes extends Component {
     this.props.history.push(`/my-recipes/new`);
   }
 
+  handleMenuTypeChange = (e) => {
+    this.setState({
+      mode: e.target.value
+    }, this.fetch)
+  }
+
   render() {
     return <div>
-    <div style={{width: 300, float: "left", paddingRight: 20}}>
-      <Search placeholder="Поиск" onSearch={this.searchChange} enterButton/>
-    </div>
-    <div style={{textAlign: 'right', marginBottom: 10,}}>
+    <div>
+      <div style={{ width: 300, float: "left", paddingRight: 20 }}>
+        <Search placeholder="Поиск" onSearch={this.searchChange} enterButton/>
+      </div>
+      <Radio.Group defaultValue={recipeMode.my} onChange={this.handleMenuTypeChange}>
+        <Radio.Button value={recipeMode.my} >Мои рецепты</Radio.Button>
+        <Radio.Button value={recipeMode.all} >Все рецепты</Radio.Button>
+      </Radio.Group>
+      <div style={{ float: 'right', marginBottom: 10 }}>
       <Button onClick={this.createNew.bind(this)} primary={"true"}>Создать<Icon type="plus"/></Button>
     </div>
+    </div>
+
+
     <Table
       columns={columns}
       rowKey={record => record.id}
