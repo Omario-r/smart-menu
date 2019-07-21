@@ -47,7 +47,7 @@ class MyFoodMenuForm extends Component {
 
   makeMenuTree() {
     const { menu } = this.state;
-    // console.log('menu rec', menu.menu_recipes)
+    console.log('menu rec', menu)
     const weeks = menu.weeks.map((weekName, weekIndex) => {
       const days = WEEK_DAYS.map((day, dayIndex) => {
         const times = EAT_TIMES.map((eatTime, etIndex) => {
@@ -147,7 +147,7 @@ class MyFoodMenuForm extends Component {
   startAddingRecipe(week, day, eat_time) {
     const { menu } = this.state;
     this.props.setMenuForRecipeAdding({ menu_id: menu.id, week, day, eat_time });
-    this.props.history.push('/my-recipes')
+    this.props.history.push('/recipes')
   }
 
   finishAddingRecipe() {
@@ -171,7 +171,7 @@ class MyFoodMenuForm extends Component {
     const { menu, weeks } = this.state;
     // console.log('menu >>', menu)
 
-    return <Skeleton loading={this.state.loading} active>
+  return <Skeleton loading={this.state.loading} active>
     <Form onSubmit={this.handleSubmit}>
       <Row gutter={20}>
         <Col span={6}>
@@ -198,11 +198,15 @@ class MyFoodMenuForm extends Component {
         </Col>
       </Row>
       <Row style={{ textAlign: 'center' }}>
-        <Button type="primary" loading={this.state.saving} htmlType="submit">{menu.id ? 'Сохранить' : 'Создать'}</Button>
+        <Button type="primary" loading={this.state.saving} htmlType="submit">
+          {menu.id ? 'Сохранить' : 'Создать'}
+        </Button>
       </Row>
     </Form>
     <div>
-      <Button size='small' style={{ marginBottom: 10 }} onClick={this.handleWeekAdd.bind(this)}>Добавить неделю</Button>
+      <Button size='small' style={{ marginBottom: 10 }} onClick={this.handleWeekAdd.bind(this)}>
+        Добавить неделю
+      </Button>
       <Tabs
         hideAdd
         type="editable-card"
@@ -210,7 +214,11 @@ class MyFoodMenuForm extends Component {
       >
       {weeks.map((week, weekIndex) => (
         <TabPane tab={`Неделя ${weekIndex + 1}`} key={week.weekName}>
-          <Week week={week} addRecipe={this.startAddingRecipe.bind(this)} removeRecipe={this.removeRecipe.bind(this)}/>
+          <Week 
+            week={week}
+            addRecipe={this.startAddingRecipe.bind(this)}
+            removeRecipe={this.removeRecipe.bind(this)}
+          />
         </TabPane>
       ))}
       </Tabs>
@@ -263,7 +271,12 @@ class Day extends Component {
         key={eatTime.name}
         title={eatTime.title}
         style={{ width: 300, marginBottom: 20 }}
-        extra={<Button style={{ marginTop: 5 }} size='small' onClick={addRecipe.bind(null, week.weekName, day.id, eatTime.id)}>Добавить блюдо</Button>}
+        extra={<Button 
+            style={{ marginTop: 5 }} 
+            size='small' onClick={addRecipe.bind(null, week.weekName, day.id, eatTime.id)}
+          >
+            Добавить блюдо
+          </Button>}
       >
         {eatTime.menuRecipes.map((menuRecipe, i) =>
           <div key={i}>

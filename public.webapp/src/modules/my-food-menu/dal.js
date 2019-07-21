@@ -1,6 +1,8 @@
 import XHR from '../../utils/fetch';
 
-export const fetchMenus = (params) => XHR.getList('/user-menus', params);
+export const fetchAllMenus = (params) => XHR.getList('/menus', params);
+
+export const fetchUserMenus = (params) => XHR.getList('/user-menus', params);
 
 export const addMenu = (params) => XHR.post('/menus', params);
 
