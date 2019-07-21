@@ -112,6 +112,10 @@ class MyRecipesForm extends Component {
     this.props.history.push(`/my-food-menu/${addedMenu.menu_id}`)
   }
 
+  handleCloningRecipe() {
+    // cloning
+  }
+
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { recipe, edit } = this.state;
@@ -235,7 +239,9 @@ class MyRecipesForm extends Component {
       <Row>
         {addedMenu
         ? <Button onClick={this.handleRecipeAddToMenu.bind(this)} >Добавить рецепт в меню {addedMenu.menu_id}</Button>
-        : <Button onClick={this.handleEditRecipe.bind(this)} >Редактировать рецепт</Button>}     
+        : recipe.owner_id == this.props.user.id
+          ? <Button onClick={this.handleEditRecipe.bind(this)} >Редактировать рецепт</Button>
+          : <Button onClick={this.handleCloningRecipe.bind(this)} >Забрать рецепт себе</Button>}     
       </Row>
     </Row>}
   </Skeleton>
