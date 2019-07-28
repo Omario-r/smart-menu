@@ -57,7 +57,7 @@ class MyRecipes extends Component {
     const { pagination, sorter, mode } = this.state;
     let filters = {...this.state.filters};
     // filters.role = filters.role ? filters.role.map(r => parseInt(r, 10)) : [];
-    const fetchRecipes = mode === recipeMode.my ? fetchUserRecipes: fetchAllRecipes;
+    const fetchRecipes = mode === recipeMode.my ? fetchUserRecipes : fetchAllRecipes;
 
     fetchRecipes({ pagination, filters, sorter }).then(response => {
       this.setState({

@@ -122,12 +122,61 @@ function addRecipe(req, res) {
     });
 }
 
+function cloneRecipe(req, res) {
+  const { user } = res.locals;
+  const recipe_id = req.params.id;
+
+  DB.Recipe.findByPk(recipe_id, {
+    include: {
+      model: DB.RecipeFoodstuff,
+      where: { recipe_id },
+    }
+  })
+    .then((cloningRecipe) => {
+      if (!cloningRecipe) {
+        return res.status(404).json({ status: 1 });
+      }
+
+      const { name, description, portions } = cloningRecipe;
+
+      DB.Recipe.create({
+        name,
+        description,
+        portions,
+        owner_id: user.id,
+        parent_id: recipe_id,
+        public: false,
+      })
+      .then((newRecipe) => {
+        cloningRecipe.recipe_foodstuffs.map((fs) => {
+        const record = {
+          recipe_id: newRecipe.id,
+          foodstuff_id: fs.foodstuff_id,
+          weight_recipe: fs.weight_recipe,
+          weight_portion: fs.weight_portion,
+        }
+         DB.RecipeFoodstuff.create(record)
+       })
+        res.send({
+          status: 0,
+          data: newRecipe,
+        });
+      });
+
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ status: 1, error: err });
+    });
+}
+
 function connect(app) {
   app.get('/recipes', isUserAuthenticated, allRecipesList);
   app.get('/user-recipes', isUserAuthenticated, userRecipesList);
   app.post('/recipes', isUserAuthenticated, addRecipe);
   app.put('/recipes/:id', isUserAuthenticated, updateRecipe);
   app.get('/recipes/:id', isUserAuthenticated, getRecipe);
+  app.get('/recipes-clone/:id', isUserAuthenticated, cloneRecipe);
 }
 
 module.exports = { connect };

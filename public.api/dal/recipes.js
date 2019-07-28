@@ -30,9 +30,9 @@ function recipesList(req, res, user_id) {
     }
 
     if (user_id) {
-        where.push({
-            id: user_id,
-        })
+      where.push({ owner_id: user_id })
+    } else {
+      where.push({ public: true })
     }
   
     // final where

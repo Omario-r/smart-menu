@@ -9,3 +9,5 @@ export const addRecipe = (params) => XHR.post('/recipes', params);
 export const  updateRecipe = (id, params) => XHR.put(`/recipes/${id}`, params);
 
 export const getRecipe = (id) => XHR.get(`/recipes/${id}`);
+
+export const cloneRecipe = (id) => XHR.get(`/recipes-clone/${id}`);

@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const DB = require('../../core/db');
 
 const { Op } = Sequelize;
-const { isAdminOrEditorAuthenticated } = require('../authMiddleware');
+const { isAdminOrEditorAuthenticated, isUserAuthenticated } = require('../authMiddleware');
 const { ROLES } = require('../../static/constants');
 
 
@@ -166,7 +166,7 @@ function connect(app) {
   app.post('/foodstuff', isAdminOrEditorAuthenticated, addFoodstuff);
   app.put('/foodstuff/:id', isAdminOrEditorAuthenticated, updateFoodstuff);
   app.get('/foodstuff/:id', isAdminOrEditorAuthenticated, getFoodstuff);
-  app.get('/foodstuff/category/:id', isAdminOrEditorAuthenticated, getFoodstuffList);
+  app.get('/foodstuff/category/:id', isUserAuthenticated, getFoodstuffList);
 }
 
 module.exports = { connect };

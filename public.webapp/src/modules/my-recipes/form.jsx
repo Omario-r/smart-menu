@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Input, InputNumber, Select, Row, Col, Button, Switch, message, DatePicker, Radio, Skeleton, Icon } from 'antd'
 
 import { ROLES, ROLES_TITLE, FOOD_CATEGORIES } from '../../../../static/constants';
-import { getRecipe, updateRecipe, addRecipe } from './dal';
+import { getRecipe, updateRecipe, addRecipe, cloneRecipe } from './dal';
 import { DinamicSelect } from '../../components';
 import { setHeader } from '../../app/actions';
 import { fetchFoodstuffForSelect } from '../foodstuff/dal'
@@ -113,7 +113,8 @@ class MyRecipesForm extends Component {
   }
 
   handleCloningRecipe() {
-    // cloning
+    const { recipe } = this.state;
+    cloneRecipe(recipe.id).then(() => message.success('Рецепт успешно клонирован'))
   }
 
   render() {
