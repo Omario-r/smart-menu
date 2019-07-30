@@ -36,8 +36,10 @@ function menusList(req, res, user_id) {
 
   if (user_id) {
     where.push({
-      id: user_id
+      owner_id: user_id
     })
+  } else {
+    where.push({ public: true })
   }
 
   // final where

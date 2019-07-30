@@ -5,7 +5,7 @@ import { PDFViewer } from '@react-pdf/renderer';
 
 
 import { ROLES, ROLES_TITLE, WEEK_DAYS, EAT_TIMES } from '../../../../static/constants';
-import { addMenu, updateMenu, getMenu } from './dal';
+import { addMenu, updateMenu, getMenu, cloneMenu } from './dal';
 import { DinamicSelect } from '../../components';
 import { setHeader } from '../../app/actions';
 import { setMenuForRecipeAdding, unsetMenuForRecipeAdding } from './action';
@@ -47,7 +47,6 @@ class MyFoodMenuForm extends Component {
 
   makeMenuTree() {
     const { menu } = this.state;
-    console.log('menu rec', menu)
     const weeks = menu.weeks.map((weekName, weekIndex) => {
       const days = WEEK_DAYS.map((day, dayIndex) => {
         const times = EAT_TIMES.map((eatTime, etIndex) => {
@@ -163,13 +162,19 @@ class MyFoodMenuForm extends Component {
     const { menu } = this.state;
     const menu_recipes = menu.menu_recipes.filter(mr => mr.id !== id)
     this.saveMenu( { ...menu, menu_recipes })
+  }
 
+  cloneMenu = () => {
+    const { menu } = this.state;
+    cloneMenu(menu.id)
+    .then(() => message.success('Меню успешно скопировано'))
   }
 
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { menu, weeks } = this.state;
     // console.log('menu >>', menu)
+    const isMyMenu = menu.owner_id == this.props.user.id || menu.id === undefined;
 
   return <Skeleton loading={this.state.loading} active>
     <Form onSubmit={this.handleSubmit}>
@@ -181,7 +186,7 @@ class MyFoodMenuForm extends Component {
             {getFieldDecorator('name', {
               rules: [{ required: true, message: 'Введите название' }],
             })(
-              <Input />
+              <Input disabled={!isMyMenu} />
             )}
           </FormItem>
         </Col>
@@ -192,24 +197,26 @@ class MyFoodMenuForm extends Component {
             {getFieldDecorator('description', {
               rules: [{ required: true, message: 'Введите описание' }],
             })(
-              <Input />
+              <Input disabled={!isMyMenu} />
             )}
           </FormItem>
         </Col>
       </Row>
       <Row style={{ textAlign: 'center' }}>
-        <Button type="primary" loading={this.state.saving} htmlType="submit">
-          {menu.id ? 'Сохранить' : 'Создать'}
-        </Button>
+        {isMyMenu
+          ? <Button type="primary" loading={this.state.saving} htmlType="submit">
+                {menu.id ? 'Сохранить' : 'Создать'}
+              </Button>
+          : <Button type="primary" htmlType="button" onClick={this.cloneMenu}>Забрать себе</Button>}
       </Row>
     </Form>
     <div>
-      <Button size='small' style={{ marginBottom: 10 }} onClick={this.handleWeekAdd.bind(this)}>
+      {isMyMenu && <Button size='small' style={{ marginBottom: 10 }} onClick={this.handleWeekAdd.bind(this)}>
         Добавить неделю
-      </Button>
+      </Button>}
       <Tabs
         hideAdd
-        type="editable-card"
+        type={isMyMenu ? 'editable-card' : 'card'}
         onEdit={this.handleWeekRemove.bind(this)} // сюда приходит key={week.weekName} ввиде строки
       >
       {weeks.map((week, weekIndex) => (
@@ -218,6 +225,7 @@ class MyFoodMenuForm extends Component {
             week={week}
             addRecipe={this.startAddingRecipe.bind(this)}
             removeRecipe={this.removeRecipe.bind(this)}
+            isMyMenu={isMyMenu}
           />
         </TabPane>
       ))}
@@ -230,14 +238,14 @@ class MyFoodMenuForm extends Component {
 
 class Week extends Component {
   render() {
-    const { week, addRecipe, removeRecipe } = this.props; 
+    const { week, addRecipe, removeRecipe, isMyMenu } = this.props; 
     return <div>
       <Tabs
         tabPosition='left'
       >
         {week.weekDays.map(day => (
           <TabPane tab={`${day.title}`} key={day.name}>
-            <Day day={day} week={week} addRecipe={addRecipe} removeRecipe={removeRecipe}/>
+            <Day isMyMenu={isMyMenu} day={day} week={week} addRecipe={addRecipe} removeRecipe={removeRecipe}/>
           </TabPane>
         ))}
       </Tabs>
@@ -263,7 +271,7 @@ class Day extends Component {
   }
 
   render() {
-    const { day, week, addRecipe, removeRecipe } = this.props;
+    const { day, week, addRecipe, removeRecipe, isMyMenu } = this.props;
     const { modalRecipe } = this.state;
 
     const eatTimeCard = (eatTimes) => eatTimes.map(eatTime => 
@@ -271,7 +279,7 @@ class Day extends Component {
         key={eatTime.name}
         title={eatTime.title}
         style={{ width: 300, marginBottom: 20 }}
-        extra={<Button 
+        extra={isMyMenu && <Button 
             style={{ marginTop: 5 }} 
             size='small' onClick={addRecipe.bind(null, week.weekName, day.id, eatTime.id)}
           >
@@ -282,7 +290,7 @@ class Day extends Component {
           <div key={i}>
             <span>{menuRecipe.recipe.name}</span>
             <a onClick={this.showRecipeModal.bind(this, menuRecipe)}> рецепт {menuRecipe.portion}</a>
-            <Icon style={{ marginLeft: 3 }} type="close-circle"  onClick={removeRecipe.bind(null, menuRecipe.id)} />
+            {isMyMenu && <Icon style={{ marginLeft: 3 }} type="close-circle"  onClick={removeRecipe.bind(null, menuRecipe.id)} />}
           </div>)}
       </Card>)
 

@@ -140,7 +140,7 @@ function cloneRecipe(req, res) {
       const { name, description, portions } = cloningRecipe;
 
       DB.Recipe.create({
-        name,
+        name: `(моя копия) ${name}`,
         description,
         portions,
         owner_id: user.id,

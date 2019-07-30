@@ -125,12 +125,59 @@ function addMenu(req, res) {
     });
 }
 
+function cloneMenu(req, res) {
+  const menu_id = req.params.id;
+  const { user } = res.locals;
+
+  DB.Menu.findByPk(menu_id, {
+    include: DB.MenuRecipes,
+  })
+  .then((cloningMenu) => {
+    if (!cloningMenu) {
+      return res.status(404).json({ status: 1 });
+    }
+
+    const { name, description, weeks } = cloningMenu;
+
+    DB.Menu.create({
+      name: `(моя копия) ${name}`,
+      owner_id: user.id,
+      description,
+      weeks,
+      public: false,
+    })
+    .then((newMenu) => {
+      cloningMenu.menu_recipes.map(menuRecipe => {
+        return DB.MenuRecipes.create({
+          menu_id: newMenu.id,
+          recipe_id: menuRecipe.recipe_id,
+          week: menuRecipe.week,
+          day: menuRecipe.day,
+          eat_time: menuRecipe.eat_time,
+          portions: menuRecipe.portions,
+        })
+      })
+      res.send({
+        status: 0,
+      })
+    })
+  })
+
+
+
+
+
+
+
+}
+
 function connect(app) {
   app.get('/menus', isUserAuthenticated, allMenusList);
   app.get('/user-menus', isUserAuthenticated, userMemusList);
   app.post('/menus', isUserAuthenticated, addMenu);
   app.put('/menus/:id', isUserAuthenticated, updateMenu);
   app.get('/menus/:id', isUserAuthenticated, getMenu);
+  app.get('/menus-clone/:id', isUserAuthenticated, cloneMenu);
 }
 
 module.exports = { connect };
