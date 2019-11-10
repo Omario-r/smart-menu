@@ -48,8 +48,9 @@ class MyRecipes extends Component {
   };
 
   componentDidMount() {
+    const { addedMenu } = this.props;
     this.fetch();
-    this.props.setHeader({title: 'Рецепты'})
+    this.props.setHeader({title: addedMenu ? 'Добавление рецепта в меню' : 'Рецепты'})
   }
 
   fetch(param = {}) {
@@ -139,4 +140,6 @@ class MyRecipes extends Component {
 }
 
 
-export default connect(() => ({}), { setHeader })(MyRecipes)
+export default connect((state) => ({
+  addedMenu: state.addingRecipe.menu,
+}), { setHeader })(MyRecipes)

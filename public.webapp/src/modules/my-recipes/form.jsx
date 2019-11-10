@@ -37,12 +37,14 @@ class MyRecipesForm extends Component {
   }
 
   loadRecipe(id) {
+    const { addedMenu } = this.props;
+    console.log('ADDed menu', addedMenu)
     getRecipe(id).then(({ data: recipe }) => {
       this.setState({
         recipe,
         loading: false
       });
-      this.props.setHeader({ title: `Рецепт: ${recipe.name}`, back: true, });
+      this.props.setHeader({ title: addedMenu ? 'Добавление рецептпа в меню' : `Рецепт: ${recipe.name}`, back: true, });
     })
   }
 
