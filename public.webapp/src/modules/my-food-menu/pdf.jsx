@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { PDFViewer, Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
 
 
@@ -64,9 +64,18 @@ const styles = StyleSheet.create({
 });
 
 // Create Document Component
-const MyDocument = (props) => {
-  const { weeks } = props.location;
-  console.log('pdf props >>>', weeks)
+class MyDocument extends Component {
+
+componentDidMount() {
+  const { weeks } = this.props.location;
+  if (!weeks) {
+    this.props.history.push('/food-menu');
+  }
+}
+
+render() {
+  const { weeks } = this.props.location;
+  if (!weeks) return null;
   return <div style={{ height: 500 }}>
     <PDFViewer width='100%' height='100%' >
       <Document>
@@ -96,7 +105,7 @@ const MyDocument = (props) => {
       </Document>
     </PDFViewer>
   </div>
-
+  }
 };
 
 export default MyDocument;
