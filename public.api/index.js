@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 
-const PORT = parseInt(process.env.PORT, 10) || 3011;
+const PORT = parseInt(process.env.PUBLIC_PORT, 10) || 3011;
 
 const app = express();
 
