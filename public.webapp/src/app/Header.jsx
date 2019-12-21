@@ -8,6 +8,7 @@ import { clearToken } from '../utils/fetch';
 import AuthUtils from '../utils/auth';
 import { unsetUser } from '../modules/auth/actions';
 import { setHeader } from './actions';
+import AppMenu from './Menu';
 
 import styles from './styles.less';
 
@@ -35,6 +36,8 @@ class AppHeader extends React.Component {
   render() {
     const { header, user } = this.props;
     return <Header className={styles.header}>
+      <div className="logo"><img src={require('../images/SM_logo_gray1.jpg')} style={{ height: 70, width: '100%' }} /></div>
+      <AppMenu />
       {header.back && <Icon type="arrow-left"  style={backStyle} onClick={this.goBack.bind(this)}/>}
       <h2 className="header__title">{header.title}</h2>
       <div className="header__username">{user.last_name||''+' '+user.first_name||''}</div>

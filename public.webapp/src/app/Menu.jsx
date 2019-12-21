@@ -30,9 +30,8 @@ class AppMenu extends Component {
 
     let defaultKey = path || 'dashboard';
 
-    return <Sider className={styles.menuSider}>
-      <div className="logo"><img src={require('../images/SM_logo_gray1.jpg')} style={{ height: 70, width: '100%' }} /></div>
-      <Menu theme="dark" mode="inline" defaultSelectedKeys={[defaultKey]} onClick={this.onMenuClick.bind(this)}>
+    return (
+      <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[defaultKey]} onClick={this.onMenuClick.bind(this)}>
         <Menu.Item key="food-menu">
           <Icon type="bars" />
           <span className="nav-text">Меню</span>
@@ -41,17 +40,8 @@ class AppMenu extends Component {
           <Icon type="profile" />
           <span className="nav-text">Рецепты</span>
         </Menu.Item>
-        {isAdminOrEditor && <Menu.Item key="foodstuff">
-          <Icon type="gold" />
-          <span className="nav-text">Продукты</span>
-        </Menu.Item>}
-        {isAdmin && <Menu.Item key="users">
-          <Icon type="user" />
-          <span className="nav-text">Пользователи</span>
-        </Menu.Item>}
-
       </Menu>
-    </Sider>
+    )
   }
 }
 

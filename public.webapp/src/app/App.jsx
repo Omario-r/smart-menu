@@ -1,6 +1,5 @@
 import React from 'react';
 import { Layout, Button } from 'antd';
-import AppMenu from './Menu';
 import AppHeader from './Header';
 import styles from './styles.less'
 
@@ -10,7 +9,6 @@ const { Content, Footer, } = Layout;
 class App extends React.Component {
   render() {
     return <Layout style={{ height: '100%' }}>
-      <AppMenu />
       <Layout style={{ height: '100%' }}>
         <div className={styles.container}>
           <AppHeader />

@@ -27,10 +27,6 @@ import MyPDFMenu from './modules/my-food-menu/pdf';
 const AppRoutes = () => (
   <AppContainer>
     <Route exact path="/" component={MyFoodMenu} />
-    <Route path="/users" exact={true} component={Users} />
-    <Route path="/users/:id" exact={true} component={UserForm} />
-    <Route path="/foodstuff" exact={true} component={Foodstuff} />
-    <Route path="/foodstuff/:id" exact={true} component={FoodstuffForm} />
     <Route path="/recipes" exact={true} component={MyRecipes} />
     <Route path="/my-recipes/:id" exact={true} component={MyRecipesForm} />
     <Route path="/food-menu" exact={true} component={MyFoodMenu} />
