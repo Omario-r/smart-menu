@@ -14,10 +14,6 @@ import Login from './modules/auth/login';
 import Registration from './modules/auth/regisration';
 // App components
 import AppContainer from './app/App';
-import Users from './modules/users/list';
-import UserForm from './modules/users/form';
-import Foodstuff from './modules/foodstuff/list';
-import FoodstuffForm from './modules/foodstuff/form';
 import MyFoodMenu from './modules/my-food-menu/list';
 import MyFoodMenuForm from './modules/my-food-menu/form';
 import MyRecipes from './modules/my-recipes/list';

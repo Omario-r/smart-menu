@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { loginRequest } from './actions';
 import { userRegister } from './dal'
-import { isEmailExist } from '../users/dal'
+import { isEmailExist } from './dal'
 
 import styles from './styles.less';
 
