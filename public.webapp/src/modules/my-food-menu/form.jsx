@@ -26,6 +26,7 @@ class MyFoodMenuForm extends Component {
     saving: false,
     showRecipeModal: false,
     modalRecipe: { recipe: {} },
+    activeWeek: '1'
   }
 
   
@@ -146,6 +147,7 @@ class MyFoodMenuForm extends Component {
   startAddingRecipe(week, day, eat_time) {
     const { menu } = this.state;
     this.props.setMenuForRecipeAdding({ menu_id: menu.id, week, day, eat_time });
+    this.setState({ activeWeek: week, activeDay: day })
     this.props.history.push('/recipes')
   }
 
@@ -172,7 +174,7 @@ class MyFoodMenuForm extends Component {
 
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { menu, weeks } = this.state;
+    const { menu, weeks, activeWeek, activeDay } = this.state;
     // console.log('menu >>', menu)
     const isMyMenu = menu.owner_id == this.props.user.id || menu.id === undefined;
 
@@ -218,14 +220,17 @@ class MyFoodMenuForm extends Component {
         hideAdd
         type={isMyMenu ? 'editable-card' : 'card'}
         onEdit={this.handleWeekRemove.bind(this)} // сюда приходит key={week.weekName} ввиде строки
+        activeKey={activeWeek}
+        onChange={(aw) => this.setState({ activeWeek: aw })}
       >
       {weeks.map((week, weekIndex) => (
-        <TabPane tab={`Неделя ${weekIndex + 1}`} key={week.weekName}>
+        <TabPane tab={`Неделя ${weekIndex + 1}`} key={week.weekName} >
           <Week 
             week={week}
             addRecipe={this.startAddingRecipe.bind(this)}
             removeRecipe={this.removeRecipe.bind(this)}
             isMyMenu={isMyMenu}
+            activeDay={activeDay}
           />
         </TabPane>
       ))}
@@ -238,10 +243,11 @@ class MyFoodMenuForm extends Component {
 
 class Week extends Component {
   render() {
-    const { week, addRecipe, removeRecipe, isMyMenu } = this.props; 
+    const { week, addRecipe, removeRecipe, isMyMenu, activeDay, activeWeek } = this.props; 
     return <div>
       <Tabs
         tabPosition='left'
+        // activeKey={activeWeek || '1'}
       >
         {week.weekDays.map(day => (
           <TabPane tab={`${day.title}`} key={day.name}>

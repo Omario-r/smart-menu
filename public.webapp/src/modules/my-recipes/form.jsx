@@ -38,7 +38,6 @@ class MyRecipesForm extends Component {
 
   loadRecipe(id) {
     const { addedMenu } = this.props;
-    console.log('ADDed menu', addedMenu)
     getRecipe(id).then(({ data: recipe }) => {
       this.setState({
         recipe,
