@@ -18,10 +18,10 @@ class App extends React.Component {
             {this.props.children}
           </Content>
         </div>
+        <Footer className={styles.footer}>
+          Smart Menu ©2019 Powered by Roman Avilov
+        </Footer>
       </Layout>
-      <Footer className={styles.footer}>
-        Smart Menu ©2019 Powered by Roman Avilov
-      </Footer>
     </Layout>
   }
 }
