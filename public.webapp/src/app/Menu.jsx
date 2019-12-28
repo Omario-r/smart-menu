@@ -13,7 +13,7 @@ class AppMenu extends Component {
 
   onMenuClick({ key }) {
     switch(key) {
-      case 'dashboard':
+      case 'main':
         this.props.history.push('/');
         break;
       default:
@@ -31,7 +31,10 @@ class AppMenu extends Component {
     let defaultKey = path || 'dashboard';
 
     return (
-      <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[defaultKey]} onClick={this.onMenuClick.bind(this)}>
+      <Menu className="header__menu" mode="horizontal" defaultSelectedKeys={[defaultKey]} onClick={this.onMenuClick.bind(this)}>
+        <Menu.Item key="main">
+          <div className="logo"><img src={require('../images/SM_logo_gray1.jpg')} style={{ height: 70, width: '100%' }} /></div>
+        </Menu.Item>
         <Menu.Item key="food-menu">
           <Icon type="bars" />
           <span className="nav-text">Меню</span>

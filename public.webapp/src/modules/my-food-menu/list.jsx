@@ -51,7 +51,7 @@ class MyFoodMenu extends Component {
 
   componentDidMount() {
     this.fetch();
-    this.props.setHeader({title: 'Список меню'})
+    this.props.setHeader({title: 'Список меню', back: true})
   }
 
   fetch() {
