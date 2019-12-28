@@ -307,11 +307,11 @@ class Day extends Component {
 
     return <div>    
       <Row><h2>{day.title}</h2></Row>
-      <Row gutter={24}>
-        <Col span={6} >
+      <Row gutter={6}>
+        <Col span={6} style={{ marginRight: 50 }}>
           {eatTimeCard(day.eatTimes.filter((d, i) => (i + 2) % 2 === 0))}
         </Col >
-        <Col style={{ paddingLeft: 50 }} span={6} >
+        <Col style={{ marginLeft: 50 }} span={6} >
           {eatTimeCard(day.eatTimes.filter((d, i) => (i + 2) % 2 !== 0))}
         </Col>
       </Row>
