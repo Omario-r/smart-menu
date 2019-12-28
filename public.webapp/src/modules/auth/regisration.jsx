@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+
 import { loginRequest } from './actions';
 import { userRegister } from './dal'
 import { isEmailExist } from './dal'
@@ -57,7 +60,8 @@ class Register extends Component {
                 <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Пароль" />
               )}
             </FormItem>
-            <div style={{ textAlign: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Link to='/'>Вход</Link>
               <Button type="primary" htmlType="submit" className="login-form-button" /* loading={this.props.auth.loginRequesting}*/>
                 Зарегистрироваться
               </Button>
