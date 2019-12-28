@@ -26,7 +26,8 @@ class MyFoodMenuForm extends Component {
     saving: false,
     showRecipeModal: false,
     modalRecipe: { recipe: {} },
-    activeWeek: '1'
+    activeWeek: '1',
+    activeDay: '0',
   }
 
   
@@ -147,15 +148,15 @@ class MyFoodMenuForm extends Component {
   startAddingRecipe(week, day, eat_time) {
     const { menu } = this.state;
     this.props.setMenuForRecipeAdding({ menu_id: menu.id, week, day, eat_time });
-    this.setState({ activeWeek: week, activeDay: day })
     this.props.history.push('/recipes')
   }
-
+  
   finishAddingRecipe() {
     const { addedMenu, newRecipe } = this.props;
     const { menu } = this.state;
     const menuRecipe = { ...addedMenu, recipe_id: newRecipe.id, recipe: newRecipe }
     menu.menu_recipes.push(menuRecipe)
+    this.setState({ activeWeek: `${addedMenu.week}`, activeDay: `${addedMenu.day}` })
     this.props.unsetMenuForRecipeAdding();
     this.saveMenu(menu);
   }
@@ -175,7 +176,6 @@ class MyFoodMenuForm extends Component {
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { menu, weeks, activeWeek, activeDay } = this.state;
-    // console.log('menu >>', menu)
     const isMyMenu = menu.owner_id == this.props.user.id || menu.id === undefined;
 
   return <Skeleton loading={this.state.loading} active>
@@ -242,15 +242,20 @@ class MyFoodMenuForm extends Component {
 }
 
 class Week extends Component {
+  state = {
+    activeDay: this.props.activeDay
+  }
   render() {
-    const { week, addRecipe, removeRecipe, isMyMenu, activeDay, activeWeek } = this.props; 
+    const { week, addRecipe, removeRecipe, isMyMenu } = this.props;
+    const { activeDay } = this.state;
     return <div>
       <Tabs
         tabPosition='left'
-        // activeKey={activeWeek || '1'}
+        activeKey={activeDay}
+        onChange={(d) => this.setState({ activeDay: d })}
       >
         {week.weekDays.map(day => (
-          <TabPane tab={`${day.title}`} key={day.name}>
+          <TabPane tab={`${day.title}`} key={day.id}>
             <Day isMyMenu={isMyMenu} day={day} week={week} addRecipe={addRecipe} removeRecipe={removeRecipe}/>
           </TabPane>
         ))}
