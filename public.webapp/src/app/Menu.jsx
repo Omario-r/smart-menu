@@ -33,7 +33,7 @@ class AppMenu extends Component {
     return (
       <Menu className="header__menu" mode="horizontal" defaultSelectedKeys={[defaultKey]} onClick={this.onMenuClick.bind(this)}>
         <Menu.Item key="main">
-          <div className="logo"><img src={require('../images/SM_logo_gray1.jpg')} style={{ height: 70, width: '100%' }} /></div>
+          <div className="logo"><img src={require('../images/SM_logo_gray1.jpg')} style={{ height: 70 }} /></div>
         </Menu.Item>
         <Menu.Item key="food-menu">
           <Icon type="bars" />
