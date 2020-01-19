@@ -3,12 +3,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 
-const PORT = parseInt(process.env.ADMIN_PORT, 10) || 3010;
 
 const app = express();
 
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
+const PORT = parseInt(process.env.ADMIN_PORT, 10) || 3010;
 // if (process.env.NODE_ENV !== 'production') {
 //   app.use('/images', express.static(`${process.env.STORE_PATH}/images`));
 // }
