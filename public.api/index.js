@@ -3,16 +3,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 
-const PORT = parseInt(process.env.PUBLIC_PORT, 10) || 3011;
-
 const app = express();
 
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 // if (process.env.NODE_ENV !== 'production') {
-//   app.use('/images', express.static(`${process.env.STORE_PATH}/images`));
-// }
-
+  //   app.use('/images', express.static(`${process.env.STORE_PATH}/images`));
+  // }
+const PORT = parseInt(process.env.PUBLIC_PORT, 10) || 3011;
+  
 app.use(logger('dev'));
 
 app.use(bodyParser.json());
