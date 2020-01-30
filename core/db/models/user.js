@@ -18,11 +18,11 @@ module.exports = (sequelize, DataTypes) => {
     removed: DataTypes.BOOLEAN,
     created_at: {
       type: DataTypes.DATE,
-      defaultValue: new Date(),
+      defaultValue: () => new Date(),
     },
     updated_at: {
       type: DataTypes.DATE,
-      defaultValue: new Date(),
+      defaultValue: () => new Date(),
     },
   }, {
     timestamps: false,
